@@ -5,7 +5,7 @@
  * @copyright   2013 Ryan Van Etten
  * @version     0.5.0
  */
- 
+
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
 , continue: true, debug: true, eqeq: true, es5: true, forin: true, newcap: true
 , nomen: true, plusplus: true, regexp: true, undef: true, sloppy: true, stupid: true
@@ -69,17 +69,18 @@
         data = typeof data == 'function' ? data() : data;
         if ( typeof data != 'object' ) { throw new TypeError; }
         data = fill({ 'pass': 'Pass', 'fail': 'Fail' }, data);
-        data['test'] = !!(typeof data['test'] == 'function' ? data['test']() : data['test']);
-        aok['handler'] && aok['handler'].call(data);
+        if ( typeof data['test'] == 'function' ) { data['test'] = data['test'](); }
+        data['test'] = !!data['test'];
+        aok['run']['handler'] && aok['run']['handler'].call(data);
     };
 
     /**
      * @param {Object}  data
      */    
-    aok['handler'] = function (data) {
-        var msg = data['test'] ? data['pass'] : data['fail'];
-        if ( typeof msg == 'string' ) { aok['log']('' + data['id'] + ':' + msg); }
-        else if ( typeof msg == 'function' ) { msg.call(data); }
+    aok['run']['handler'] = function () {
+        var msg = this['test'] ? this['pass'] : this['fail'];
+        if ( typeof msg == 'string' ) { aok['log']('' + this['id'] + ':' + msg); }
+        else if ( typeof msg == 'function' ) { msg.call(this); }
     };
     
     return aok;
