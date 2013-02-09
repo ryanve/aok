@@ -1,9 +1,9 @@
 /*!
- * aok          test suite
+ * aok          Test suite API
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.5.0
+ * @version     0.6.0
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -22,66 +22,65 @@
       , console = win.console
       , hasConsole = !!console
       , alert = win.alert
-      , join = [].join
-      , aok = function () { 
-            return aok.run.apply(this, arguments); 
-        };
+      , join = [].join;
 
+    /**
+     * @constructor 
+     * @param  {(Object=}  data
+     */
+    function Aok (data) {
+        var k;
+        if ( null != data ) {
+            for ( k in data ) { this[k] = data[k]; }
+            this['run']();
+        }
+    }
+
+    /**
+     * @param  {Object=}  data
+     */
+    function aok (data) { 
+        return new Aok(data); 
+    }
+    
+    aok.prototype = Aok.prototype = {
+        'pass': 'Pass'
+      , 'fail': 'Fail'
+      , 'run': function () {// run the test and trigger the handler
+            if ( !(this instanceof aok) ) { throw new TypeError; }
+            if ( typeof this['test'] == 'function' ) { this['test'] = this['test'](); }
+            this['test'] = !!this['test'];
+            this['handler'] && this['handler']();
+        }
+      , 'handler': function () {// default handler can be overridden:
+            var msg = this['test'] ? this['pass'] : this['fail'];
+            if ( typeof msg == 'string' ) { aok['log']('#' + this['id'] + ': ' + msg); } 
+            else if ( typeof msg == 'function' ) { msg.call(this); }
+        }
+     };
+    
+    /**
+     * @param {string}  n   
+     */
     aok['id'] = function (n) {
         return doc.getElementById(n);
     };
-
-    /**
-     * @param  {string}            name
-     * @param  {(number|boolean)=} force
-     * @return Function
-     */ 
-    function make (name, force) {
-        aok[name] = hasConsole && typeof console[name] == 'function' ? function () { 
+   
+    // console methods:
+    (function (make) {
+        make('log');
+        make('trace');
+        make('info' , 1);
+        make('warn' , 1);
+        make('error', 1);
+        make('trace', 1);
+    }(function (name, force) {
+        aok[name] = aok.prototype[name] = hasConsole && typeof console[name] == 'function' ? function () {
             console[name].apply(console, arguments); 
-        } : force ? function () { 
+        } : force ? function () {
             alert(name + ': ' + join.call(arguments)); 
         } : function () {};
-    }
-    
-    make('log');
-    make('trace');
-    make('info', 1);
-    make('warn', 1);
-    make('error', 1);
-    make('trace', 1);
-    
-    /**
-     * @param {Object|Function}  r     receiver
-     * @param {Object|Function}  s     supplier
-     */
-    function fill (r, s) {
-        var k;
-        for (k in s) {
-            null != s[k] && (r[k] = s[k]);
-        } return r;
-    }
-    
-    /**
-     * @param {Object|Function}  data
-     */
-    aok['run'] = function (data) {
-        data = typeof data == 'function' ? data() : data;
-        if ( typeof data != 'object' ) { throw new TypeError; }
-        data = fill({ 'pass': 'Pass', 'fail': 'Fail' }, data);
-        if ( typeof data['test'] == 'function' ) { data['test'] = data['test'](); }
-        data['test'] = !!data['test'];
-        aok['run']['handler'] && aok['run']['handler'].call(data);
-    };
-
-    /**
-     * @param {Object}  data
-     */    
-    aok['run']['handler'] = function () {
-        var msg = this['test'] ? this['pass'] : this['fail'];
-        if ( typeof msg == 'string' ) { aok['log']('' + this['id'] + ':' + msg); }
-        else if ( typeof msg == 'function' ) { msg.call(this); }
-    };
+    }));
     
     return aok;
 
