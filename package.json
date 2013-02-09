@@ -1,0 +1,14 @@
+{
+    "name": "aok",
+    "description": "Test suite framework.",
+    "version": "0.5.0",
+    "homepage": "https://github.com/ryanve/aok",
+    "author": "Ryan Van Etten <@ryanve>",
+    "keywords": ["testing", "test suite", "javascript", "ender"],
+    "main": "./aok.js",
+    "ender": "noop",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ryanve/aok.git"
+    }
+}
