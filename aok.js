@@ -20,9 +20,7 @@
     var win = window
       , doc = document
       , console = win.console
-      , hasConsole = !!console
-      , alert = win.alert
-      , join = [].join;
+      , alert = win.alert;
       
     /**
      * @constructor 
@@ -90,13 +88,12 @@
         make('error', 1);
         make('trace', 1);
     }(function(name, force) {
-        aok[name] = aok.prototype[name] = hasConsole && typeof console[name] == 'function' ? function() {
+        aok[name] = aok.prototype[name] = console && typeof console[name] == 'function' ? function() {
             console[name].apply(console, arguments); 
         } : force ? function() {
-            alert(name + ': ' + join.call(arguments, ' ')); 
+            alert(name + ': ' + [].join.call(arguments, ' ')); 
         } : function() {};
     }));
     
     return aok;
-
 }));
