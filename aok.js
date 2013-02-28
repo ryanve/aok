@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.7.0
+ * @version     0.7.1
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -86,7 +86,6 @@
         make('info' , 1);
         make('warn' , 1);
         make('error', 1);
-        make('trace', 1);
     }(function(name, force) {
         aok[name] = console && typeof console[name] == 'function' ? function() {
             console[name].apply(console, arguments); 
