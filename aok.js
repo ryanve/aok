@@ -9,7 +9,7 @@
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
 , continue: true, debug: true, eqeq: true, es5: true, forin: true, newcap: true
 , nomen: true, plusplus: true, regexp: true, undef: true, sloppy: true, stupid: true
-, sub: true, white: true, indent: 4, maxerr: 180 */
+, sub: true, white: true, indent: 4, maxerr: 100 */
 
 (function(root, name, definition) {// github.com/umdjs/umd
     if (typeof module != 'undefined' && module['exports']) {
