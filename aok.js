@@ -12,9 +12,9 @@
 , sub: true, white: true, indent: 4, maxerr: 180 */
 
 (function(root, name, definition) {// github.com/umdjs/umd
-    if (typeof module != 'undefined' && module['exports']) { 
-        module['exports'] = definition(); // node / ender / common
-    } else { root[name] = definition(); } // browser
+    if (typeof module != 'undefined' && module['exports']) {
+        module['exports'] = definition(); // common|node|ender
+    } else { root[name] = definition(); }
 }(this, 'aok', function() {
     
     var win = window
@@ -26,7 +26,7 @@
 
     /**
      * @constructor 
-     * @param  {(Object=}  data
+     * @param  {Object=}  data
      */
     function Aok(data) {
         var k;
@@ -40,6 +40,7 @@
 
     /**
      * @param  {Object=}  data
+     * @return {Aok}
      */
     function aok(data) { 
         return new Aok(data); 
