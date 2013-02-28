@@ -1,7 +1,7 @@
 {
     "name": "aok",
     "description": "Test suite API.",
-    "version": "0.6.1",
+    "version": "0.6.2",
     "homepage": "https://github.com/ryanve/aok",
     "author": "Ryan Van Etten <@ryanve>",
     "keywords": ["testing", "test suite", "javascript", "ender"],

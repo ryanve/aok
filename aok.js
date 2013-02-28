@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.6.1
+ * @version     0.6.2
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -16,14 +16,14 @@
         module['exports'] = definition(); // common|node|ender
     } else { root[name] = definition(); }
 }(this, 'aok', function() {
-    
+
     var win = window
       , doc = document
       , console = win.console
       , hasConsole = !!console
       , alert = win.alert
       , join = [].join;
-
+      
     /**
      * @constructor 
      * @param  {Object=}  data
@@ -46,30 +46,33 @@
         return new Aok(data); 
     }
     
-    aok.prototype = Aok.prototype = {
-        'pass': 'Pass'
-      , 'fail': 'Fail'
-      , 'run': function() {
-            // run the test and trigger the handler
-            if (!(this instanceof aok)) {
-                throw new TypeError; 
-            }
-            if (typeof this['test'] == 'function') {
-                this['test'] = this['test'](); 
-            }
-            this['test'] = !!this['test'];
-            this['handler'] && this['handler']();
+    // sync the prototypes
+    aok.prototype = Aok.prototype;
+    
+    aok.prototype['pass'] = 'Pass';
+    aok.prototype['fail'] = 'Fail';
+    
+    // run the test and trigger the handler
+    aok.prototype['run'] = function() {
+        if (!(this instanceof aok)) {
+            throw new TypeError; 
         }
-      , 'handler': function() {
-            // default handler can be overridden
-            var msg = this[this['test'] ? 'pass' : 'fail'];
-            if (typeof msg == 'string') { 
-                aok['log']('#' + this['id'] + ': ' + msg); 
-            } else if (typeof msg == 'function') { 
-                msg.call(this); 
-            }
+        if (typeof this['test'] == 'function') {
+            this['test'] = this['test'](); 
         }
-     };
+        this['test'] = !!this['test'];
+        this['handler'] && this['handler']();
+    };
+
+    // default handler can be overridden
+    aok.prototype['handler'] = function() {
+        var msg = this[this['test'] ? 'pass' : 'fail'];
+        if (typeof msg == 'string') { 
+            aok['log']('#' + this['id'] + ': ' + msg); 
+        } else if (typeof msg == 'function') { 
+            msg.call(this); 
+        }
+    };
     
     /**
      * @param {string}  n   
