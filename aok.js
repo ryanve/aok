@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.7.1
+ * @version     0.8.0
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -47,18 +47,14 @@
     // sync the prototypes
     aok.prototype = Aok.prototype;
     
+    // default messages
     aok.prototype['pass'] = 'Pass';
     aok.prototype['fail'] = 'Fail';
     
     // run the test and trigger the handler
     aok.prototype['run'] = function() {
-        if (!(this instanceof aok)) {
-            throw new TypeError; 
-        }
-        if (typeof this['test'] == 'function') {
-            this['test'] = this['test'](); 
-        }
-        this['test'] = !!this['test'];
+        if (!(this instanceof aok)) { throw new TypeError; }
+        this['test'] = !!(typeof this['test'] == 'function' ? this['test']() : this['test']);
         this['handler'] && this['handler']();
     };
 
@@ -73,10 +69,11 @@
     };
     
     /**
-     * @param {string}  n   
+     * @param  {string}  n   
+     * @return {Node|boolean}
      */
     aok['id'] = function(n) {
-        return doc.getElementById(n);
+        return doc.getElementById(n) || false;
     };
    
     // console methods:
