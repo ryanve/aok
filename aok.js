@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.8.0
+ * @version     0.8.1
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -20,7 +20,8 @@
     var win = window
       , doc = document
       , console = win.console
-      , alert = win.alert;
+      , alert = win.alert
+      , uid = 1;
       
     /**
      * @constructor 
@@ -29,7 +30,7 @@
     function Aok(data) {
         var k;
         if (null != data) {
-            for (k in data) { 
+            for (k in data) {
                 this[k] = data[k]; 
             }
             this['run']();
@@ -54,6 +55,7 @@
     // run the test and trigger the handler
     aok.prototype['run'] = function() {
         if (!(this instanceof aok)) { throw new TypeError; }
+        null == this['id'] && (this['id'] = uid++);
         this['test'] = !!(typeof this['test'] == 'function' ? this['test']() : this['test']);
         this['handler'] && this['handler']();
     };
@@ -61,8 +63,8 @@
     // default handler can be overridden
     aok.prototype['handler'] = function() {
         var msg = this[this['test'] ? 'pass' : 'fail'];
-        if (typeof msg == 'string') { 
-            aok['log']('#' + this['id'] + ': ' + msg); 
+        if (typeof msg == 'string') {
+            aok['log']('#' + this['id'] + ': ' + msg);
         } else if (typeof msg == 'function') { 
             msg.call(this); 
         }
