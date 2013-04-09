@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.8.1
+ * @version     0.8.2
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -25,12 +25,14 @@
       
     /**
      * @constructor 
-     * @param  {Object=}  data
+     * @param  {Object|Function=}  data
      */
     function Aok(data) {
         var k;
         if (null != data) {
-            for (k in data) {
+            if (typeof data == 'function') {
+                this['test'] = data;
+            } else for (k in data) {
                 this[k] = data[k]; 
             }
             this['run']();
