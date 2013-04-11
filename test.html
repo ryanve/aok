@@ -1,6 +1,11 @@
+<p>Open the console.</p>
 <script src="http://airve.github.io/js/dj/dj.min.js"></script>
 <script src="aok.js"></script>
 <script>
-    aok.log(dj.resample(aok));
-    aok.log(aok(typeof aok == 'function'));
+    (function(aok) {
+        aok.log(dj.resample(aok));
+        var instance = aok(true);
+        aok.log(instance);
+        aok(instance instanceof aok);
+    }(aok));
 </script>
