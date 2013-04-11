@@ -23,7 +23,7 @@
       
     /**
      * @constructor 
-     * @param  {(Object|Function|Boolean|*)=}  data
+     * @param  {*=}  data
      */
     function Aok(data) {
         var k;
@@ -36,7 +36,7 @@
     }
 
     /**
-     * @param  {Object=}  data
+     * @param  {*=}  data
      * @return {Aok}
      */
     function aok(data) { 
