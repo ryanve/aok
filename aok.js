@@ -11,10 +11,8 @@
 , nomen: true, plusplus: true, regexp: true, undef: true, sloppy: true, stupid: true
 , sub: true, white: true, indent: 4, maxerr: 100 */
 
-(function(root, name, definition) {// github.com/umdjs/umd
-    if (typeof module != 'undefined' && module['exports']) {
-        module['exports'] = definition(); // common|node|ender
-    } else { root[name] = definition(); }
+(function(root, name, make) {
+    typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
 
     var win = window
