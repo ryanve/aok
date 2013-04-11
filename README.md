@@ -7,14 +7,17 @@
 
 #### `testObject` properties
 
-- **id**: identifier or name for the test
-- **test**: boolean or function to be called in scope of `testObj`
-- **pass**: message (default: "Pass")
-- **fail**: message (default: "Fail")
-- **handler**: defaults to [`aok.prototype.handler`](https://github.com/ryanve/aok/blob/master/aok.js)
-- **run**: defaults to [`aok.prototype.run`](https://github.com/ryanve/aok/blob/master/aok.js)
+- **id**: identifier or name for the test (defaults to a positive integer)
+- **test**: result (functions are called in `testObject`'s scope)
+- **pass**: message (defaults to "Pass")
+- **fail**: message (defaults to "Fail")
+- **handler**: defaults to [`aok.prototype.handler`](./aok.js)
+- **express**: defaults to [`aok.prototype.express`](./aok.js)
+- **run**: defaults to [`aok.prototype.run`](./aok.js)
+- **cull**: defaults to [`aok.prototype.cull`](./aok.js)
+- **init**: defaults to [`aok.prototype.init`](./aok.js)
 
-#### simple example
+#### syntax
 
 ```js
 aok({
@@ -22,6 +25,18 @@ aok({
   , test: function() {
         return 'example' === this.id;
     }
+});
+```
+
+#### shorthand
+
+If `testObject` is a non-object, then its value becomes the `.test`:
+
+```js
+aok(typeof aok == 'function');
+aok(aok instanceof aok);
+aok(function() {
+    return isFinite(this.id);
 });
 ```
 
