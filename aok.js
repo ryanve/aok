@@ -52,7 +52,7 @@
     
     // run the test and trigger the handler
     aok.prototype['run'] = function() {
-        if (!(this instanceof aok)) { throw new TypeError; }
+        if (this === win) { throw new TypeError; }
         null == this['id'] && (this['id'] = uid++);
         this['test'] = !!(typeof this['test'] == 'function' ? this['test']() : this['test']);
         this['handler'] && this['handler']();
@@ -60,10 +60,10 @@
 
     // default handler can be overridden
     aok.prototype['handler'] = function() {
-        var msg = this[this['test'] ? 'pass' : 'fail'];
+        var id, msg = this[this['test'] ? 'pass' : 'fail'];
         if (typeof msg == 'string') {
             aok['log']('#' + this['id'] + ': ' + msg);
-        } else if (typeof msg == 'function') { 
+        } else if (typeof msg == 'function') {
             msg.call(this); 
         }
     };
