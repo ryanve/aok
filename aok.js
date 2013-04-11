@@ -3,7 +3,7 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     0.9.0
+ * @version     1.0.0
  */
 
 /*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
@@ -17,9 +17,7 @@
 
     var win = window
       , doc = document
-      , console = win.console
-      , alert = win.alert
-      , uid = 1;
+      , uid = 0;
       
     /**
      * @constructor 
@@ -32,7 +30,7 @@
         } else for (k in data) {
             this[k] = data[k]; 
         }
-        this['run']();
+        this['init']();
     }
 
     /**
@@ -50,22 +48,81 @@
     aok.prototype['pass'] = 'Pass';
     aok.prototype['fail'] = 'Fail';
     
-    // run the test and trigger the handler
+    // console methods:
+    (function(target, console, win) {
+        /**
+         * @param  {string}            name
+         * @param  {(boolean|number)=} force
+         * @param  {string=}           key
+         */
+        function assign(name, force, key) {
+            var method = console && typeof console[name] == 'function' ? function() {
+                console[name].apply(console, arguments);
+            } : function() {
+                method['force'] && win['alert'](name + ': ' + [].join.call(arguments, ' '));
+            };
+            method['force'] = !!force;
+            target[key || name] = method;
+        }
+        
+        assign('info',  1);
+        assign('warn',  1);
+        assign('error', 1);
+        assign('trace');
+        assign('log');
+        assign('log', 0, 'express');
+    }(aok, win.console, win));
+    
+    // sync the "express" method
+    aok.prototype['express'] = aok['express'];
+    
+    /**
+     * @param    {*} o  is an Object or mixed value
+     * @param    {(string|number)=}  k  
+     * @example  result(0)               // 0
+     * @example  result([1], 0)          // 1
+     */
+    function result(o, k) {
+        return 2 == arguments.length ? result.call(o, o[k]) : typeof o == 'function' ? o.call(this) : o;
+    }
+    aok['result'] = result;
+    
+    /**
+     * @return {Aok}
+     */
+    aok.prototype['init'] = function() {
+        if (this === win) { throw new Error('@this'); }
+        null == this['id'] && (this['id'] = ++uid);
+        return this['run']();
+    };
+    
+    /**
+     * @return {Aok}
+     */
     aok.prototype['run'] = function() {
-        if (this === win) { throw new TypeError; }
-        null == this['id'] && (this['id'] = uid++);
-        this['test'] = !!(typeof this['test'] == 'function' ? this['test']() : this['test']);
-        this['handler'] && this['handler']();
+        if (this === win) { throw new Error('@this'); }
+        this['test'] = !!result(this, 'test'); // run the test 
+        return this['handler'](); // trigger the handler
+    };
+    
+    /**
+     * @param  {(string|number)=}    key
+     */
+    aok.prototype['cull'] = function(key) {
+        return this[this[null == key ? 'test' : key] ? 'pass' : 'fail'];
     };
 
-    // default handler can be overridden
+    /**
+     * default handler can be overridden
+     * @return {Aok}
+     */
     aok.prototype['handler'] = function() {
-        var msg = this[this['test'] ? 'pass' : 'fail'];
+        var msg = this['cull']();
         if (typeof msg == 'string') {
-            aok['log']('#' + this['id'] + ': ' + msg);
+            this['express']('#' + this['id'] + ': ' + msg);
         } else if (typeof msg == 'function') {
             msg.call(this);
-        }
+        } return this;
     };
     
     /**
@@ -75,21 +132,6 @@
     aok['id'] = function(n) {
         return doc.getElementById(n) || false;
     };
-   
-    // console methods:
-    (function(make) {
-        make('log');
-        make('trace');
-        make('info' , 1);
-        make('warn' , 1);
-        make('error', 1);
-    }(function(name, force) {
-        aok[name] = console && typeof console[name] == 'function' ? function() {
-            console[name].apply(console, arguments); 
-        } : force ? function() {
-            alert(name + ': ' + [].join.call(arguments, ' ')); 
-        } : function() {};
-    }));
     
     return aok;
 }));

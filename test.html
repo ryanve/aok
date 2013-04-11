@@ -3,9 +3,36 @@
 <script src="aok.js"></script>
 <script>
     (function(aok) {
+        var instance;
         aok.log(dj.resample(aok));
-        var instance = aok(true);
-        aok.log(instance);
-        aok(instance instanceof aok);
+        aok(function() {
+            return isFinite(this.id);
+        });
+        aok.log(instance = aok({
+            id: 'handler',
+            test: false,
+            handler: function() {
+                this.test = this instanceof aok;
+                return aok.prototype.handler.call(this)
+            }
+        }));
+        aok({
+            id: 'instance',
+            test: instance instanceof aok
+        });
+        aok({
+            id: 'cull',
+            test: instance.cull()
+        });
+        aok({
+            id: 'result params',
+            test: aok.result(function() {
+                return !arguments.length && aok === this;
+            })
+        });
+        aok({
+            id: 'result return',
+            test: 1 === aok.result(1) && 1 === aok.result([1], 0)
+        });
     }(aok));
 </script>
