@@ -60,11 +60,11 @@
 
     // default handler can be overridden
     aok.prototype['handler'] = function() {
-        var id, msg = this[this['test'] ? 'pass' : 'fail'];
+        var msg = this[this['test'] ? 'pass' : 'fail'];
         if (typeof msg == 'string') {
             aok['log']('#' + this['id'] + ': ' + msg);
         } else if (typeof msg == 'function') {
-            msg.call(this); 
+            msg.call(this);
         }
     };
     
