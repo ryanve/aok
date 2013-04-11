@@ -1,5 +1,5 @@
 /*!
- * aok          Test suite API
+ * aok          Extensible test suite API
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten

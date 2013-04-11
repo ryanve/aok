@@ -1,6 +1,6 @@
 {
     "name": "aok",
-    "description": "Test suite API.",
+    "description": "Extensible test suite API.",
     "version": "1.0.0",
     "homepage": "https://github.com/ryanve/aok",
     "author": "Ryan Van Etten <@ryanve>",
