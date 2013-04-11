@@ -8,9 +8,9 @@
 #### `testObject` properties
 
 - **id**: identifier or name for the test (defaults to a positive integer)
-- **test**: result (functions are called in `testObject`'s scope)
-- **pass**: message (defaults to "Pass")
-- **fail**: message (defaults to "Fail")
+- **test**: result or callback (called in `testObject`'s scope)
+- **pass**: message or callback (default: "Pass")
+- **fail**: message or callback (default: "Fail")
 - **handler**: defaults to [`aok.prototype.handler`](./aok.js)
 - **express**: defaults to [`aok.prototype.express`](./aok.js)
 - **run**: defaults to [`aok.prototype.run`](./aok.js)
