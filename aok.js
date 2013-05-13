@@ -3,13 +3,11 @@
  * @link        github.com/ryanve/aok
  * @license     MIT
  * @copyright   2013 Ryan Van Etten
- * @version     1.0.0
+ * @version     1.1.0-pre
  */
 
-/*jslint browser: true, devel: true, node: true, passfail: false, bitwise: true
-, continue: true, debug: true, eqeq: true, es5: true, forin: true, newcap: true
-, nomen: true, plusplus: true, regexp: true, undef: true, sloppy: true, stupid: true
-, sub: true, white: true, indent: 4, maxerr: 100 */
+/*jshint expr:true, sub:true, supernew:true, debug:true, node:true, boss:true, devel:true, evil:true, 
+  laxcomma:true, eqnull:true, undef:true, unused:true, browser:true, jquery:true, maxerr:100 */
 
 (function(root, name, make) {
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
@@ -73,8 +71,18 @@
         assign('log', 0, 'express');
     }(aok, win.console, win));
     
-    // sync the "express" method
+    // Alias the "express" method. `aok.prototype.express` is used in the 
+    // default handler. Override it as needed for customization.
     aok.prototype['express'] = aok['express'];
+    
+    /**
+     * @param  {*}  item
+     * @return {string}
+     */
+    function explain(item) {
+        return '' + (item === Object(item) ? aok.prototype.toString.call(item) : item);
+    }
+    aok['explain'] = explain;
     
     /**
      * @param    {*} o  is an Object or mixed value
@@ -119,7 +127,8 @@
     aok.prototype['handler'] = function() {
         var msg = this['cull']();
         if (typeof msg == 'string') {
-            this['express']('#' + this['id'] + ': ' + msg);
+            this.hasOwnProperty('remark') && (msg += ' (' + explain(this['remark']) + ')');
+            this['express']('#' + this['id'] + ': ' + msg); 
         } else if (typeof msg == 'function') {
             msg.call(this);
         } return this;
