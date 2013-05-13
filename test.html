@@ -4,30 +4,29 @@
 <script src="aok.js"></script>
 <script>
     (function(aok) {
-        var instance;
-        //var e = dj('#test');
-        //aok.log((new e.constructor) instanceof e.constructor);
-        //aok.log(aok().a());
-        aok.log(44);
-        aok.log(dj.resample(aok));
+        var instance = aok();
         aok(function() {
             return isFinite(this.id);
         });
-        aok.log(instance = aok({
+        aok({
             id: 'handler',
             test: false,
             handler: function() {
                 this.test = this instanceof aok;
                 return aok.prototype.handler.call(this)
             }
-        }));
+        });
         aok({
             id: 'instance',
             test: instance instanceof aok
         });
         aok({
             id: 'cull',
-            test: instance.cull()
+            test: function() {
+                var culled = this.cull()
+                this.remark = culled
+                return culled === this.pass;
+            },
         });
         aok({
             id: 'remark',
@@ -36,13 +35,13 @@
             },
         });
         aok({
-            id: 'result params',
+            id: 'resultParams',
             test: aok.result(function() {
                 return !arguments.length && aok === this;
             })
         });
         aok({
-            id: 'result return',
+            id: 'resultReturn',
             test: 1 === aok.result(1) && 1 === aok.result([1], 0)
         });
     }(aok));
