@@ -42,13 +42,11 @@ aok(function() {
 
 ### console methods
 
-```js
-aok.log(message)
-aok.info(message)
-aok.warn(message)
-aok.error(message)
-aok.trace();
-```
+- `aok.log(message)`
+- `aok.info(message)`
+- `aok.warn(message)`
+- `aok.error(message)`
+- `aok.trace()`
 
 ## license
 
