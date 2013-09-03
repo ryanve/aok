@@ -1,14 +1,20 @@
 {
     "name": "aok",
     "description": "Extensible test suite API.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "homepage": "https://github.com/ryanve/aok",
-    "author": "Ryan Van Etten <@ryanve>",
+    "author": "Ryan Van Etten",
     "keywords": ["testing", "test suite", "javascript", "ender"],
     "main": "./aok.js",
     "ender": "noop",
     "repository": {
         "type": "git",
         "url": "https://github.com/ryanve/aok.git"
+    }, 
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-uglify": "~0.2.4",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-jshint": "~0.6.4"
     }
 }

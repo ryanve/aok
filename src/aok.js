@@ -1,9 +1,3 @@
-/*!
- * aok 1.2.0+201309031941
- * https://github.com/ryanve/aok
- * MIT License 2013 Ryan Van Etten
- */
-
 (function(root, name, make) {
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
