@@ -2,11 +2,13 @@
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
 
-    var win = window
-      , doc = document
+    var globe = (function() { return this; }())
       , plain = {}
       , owns = plain.hasOwnProperty
       , toString = plain.toString
+      , nativeConsole = typeof console != 'undefined' && console
+      , nativeAlert = typeof alert == 'function' && alert
+      , doc = typeof document != 'undefined' && document
       , uid = 0;
       
     /**
@@ -17,13 +19,9 @@
         // Own 'test' unless instantiated w/o args,
         // or unless `data` is 'object' w/o 'test'.
         // Running proceeds only if 'test' is owned.
-        if (data && typeof data == 'object') {
-            for (var k in data) {
-                owns.call(data, k) && (this[k] = data[k]); 
-            }
-        } else if (arguments.length) {
-            this['test'] = data;
-        }
+        if (data && typeof data == 'object')
+            for (var k in data) owns.call(data, k) && (this[k] = data[k]); 
+        else arguments.length && (this['test'] = data);
         this['init']();
     }
 
@@ -43,29 +41,29 @@
     aok.prototype['fail'] = 'Fail';
     
     // Console abstractions
-    (function(target, console, win) {
+    (function(target, console, alert) {
         /**
          * @param  {string}            name
          * @param  {(boolean|number)=} force
          * @param  {string=}           key
          */
         function assign(name, force, key) {
-            var method = console && typeof console[name] == 'function' ? function() {
+            var method = console ? function() {
                 console[name].apply(console, arguments);
             } : function() {
-                method['force'] && win['alert'](name + ': ' + [].join.call(arguments, ' '));
+                method['force'] && alert(name + ': ' + [].join.call(arguments, ' '));
             };
             method['force'] = !!force;
             target[key || name] = method;
         }
         
-        assign('info',  1);
-        assign('warn',  1);
+        assign('info', 1);
+        assign('warn', 1);
         assign('error', 1);
         assign('trace');
         assign('log');
         assign('log', 0, 'express');
-    }(aok, win.console, win));
+    }(aok, nativeConsole, nativeAlert));
     
     // Alias the "express" method. `aok.prototype.express` is used in the 
     // default handler. Override it as needed for customization.
@@ -95,7 +93,7 @@
      * @return {Aok}
      */
     aok.prototype['init'] = function() {
-        if (this === win) { throw new Error('@this'); }
+        if (this === globe) throw new Error('@this');
         owns.call(this, 'id') || (this['id'] = ++uid);
         owns.call(this, 'test') && this['run']();
         return this;
@@ -105,9 +103,9 @@
      * @return {Aok}
      */
     aok.prototype['run'] = function() {
-        if (this === win) { throw new Error('@this'); }
-        this['test'] = !!result(this, 'test'); // run the test 
-        return this['handler'](); // trigger the handler
+        if (this === globe) throw new Error('@this');
+        this['test'] = !!result(this, 'test'); // Run the test.
+        return this['handler'](); // Trigger the handler.
     };
     
     /**
@@ -140,6 +138,6 @@
     aok['id'] = function(n) {
         return doc.getElementById(n) || false;
     };
-    
+
     return aok;
 }));

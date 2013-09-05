@@ -1,10 +1,10 @@
 {
     "name": "aok",
     "description": "Extensible test suite API.",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "homepage": "https://github.com/ryanve/aok",
     "author": "Ryan Van Etten",
-    "keywords": ["testing", "test suite", "javascript", "ender"],
+    "keywords": ["testing", "test suite", "javascript", "ender", "browser", "server"],
     "main": "./aok.js",
     "ender": "noop",
     "repository": {
