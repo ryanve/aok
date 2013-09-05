@@ -21,13 +21,13 @@
             var culled = this.cull();
             this.remark = culled;
             return culled === this.pass;
-        },
+        }
     });
     aok({
         id: 'remark',
         test: function() {
             return this.remark = {};
-        },
+        }
     });
     aok({
         id: 'resultParams',

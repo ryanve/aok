@@ -1,5 +1,5 @@
 /*!
- * aok 1.2.1+201309051739
+ * aok 1.2.2+201309052111
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
@@ -12,9 +12,10 @@
       , plain = {}
       , owns = plain.hasOwnProperty
       , toString = plain.toString
-      , nativeConsole = typeof console != 'undefined' && console
-      , nativeAlert = typeof alert == 'function' && alert
+      , win = typeof window != 'undefined' && window
       , doc = typeof document != 'undefined' && document
+      , nativeConsole = typeof console != 'undefined' && console
+      , hasAlert = win && 'alert' in win
       , uid = 0;
       
     /**
@@ -47,18 +48,18 @@
     aok.prototype['fail'] = 'Fail';
     
     // Console abstractions
-    (function(target, console, alert) {
+    (function(target, console, hasAlert, win) {
         /**
          * @param  {string}            name
          * @param  {(boolean|number)=} force
          * @param  {string=}           key
          */
         function assign(name, force, key) {
-            var method = console ? function() {
+            var method = console && typeof console[name] == 'function' ? function() {
                 console[name].apply(console, arguments);
-            } : function() {
-                method['force'] && alert(name + ': ' + [].join.call(arguments, ' '));
-            };
+            } : hasAlert ? function() {
+                method['force'] && win.alert(name + ': ' + [].join.call(arguments, ' '));
+            } : function() {};
             method['force'] = !!force;
             target[key || name] = method;
         }
@@ -69,7 +70,7 @@
         assign('trace');
         assign('log');
         assign('log', 0, 'express');
-    }(aok, nativeConsole, nativeAlert));
+    }(aok, nativeConsole, hasAlert, win));
     
     // Alias the "express" method. `aok.prototype.express` is used in the 
     // default handler. Override it as needed for customization.
