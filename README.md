@@ -48,6 +48,12 @@ aok(function() {
 - `aok.error(message)`
 - `aok.trace()`
 
+### utilities
+
+- `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
+- `aok.explain(item)` - Represent `item` as a string.
+- `aok.result(object, key)` or `aok.result.call(scope, item)` - Call `item` if it is a function.
+
 ## license
 
 ### [aok](http://github.com/ryanve/aok) is available under the [MIT license](http://en.wikipedia.org/wiki/MIT_License)

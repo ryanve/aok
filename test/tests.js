@@ -39,4 +39,10 @@
         id: 'resultReturn',
         test: 1 === aok.result(1) && 1 === aok.result([1], 0)
     });
+    aok({
+        id: 'can',
+        test: true === aok.can(aok)() && false === aok.can(function() {
+            throw new Error;
+        })()
+    });
 }(this.aok));

@@ -80,15 +80,29 @@
     aok['explain'] = explain;
     
     /**
-     * @param    {*} o  is an Object or mixed value
-     * @param    {(string|number)=}  k  
-     * @example  result(0)               // 0
-     * @example  result([1], 0)          // 1
+     * @param {Function|Object|*} o
+     * @param {(string|number)=}  k  
+     * @example result(0)      // 0
+     * @example result([1], 0) // 1
      */
     function result(o, k) {
         return 2 == arguments.length ? result.call(o, o[k]) : typeof o == 'function' ? o.call(this) : o;
     }
     aok['result'] = result;
+
+    /**
+     * Get a new function that uses try/catch to test if `fn` can run.
+     * @param  {Function|string} fn  callback or key
+     * @return {Function}
+     */
+    aok['can'] = function(fn) {
+        return function() {
+            try {
+                (typeof fn == 'string' ? this[fn] : fn).apply(this, arguments);
+            } catch (e) { return false; }
+            return true;
+        };
+    };
 
     /**
      * @return {Aok}
