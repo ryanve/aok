@@ -1,5 +1,5 @@
 /*!
- * aok 1.4.0+201310162201
+ * aok 1.4.0+201310162228
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
@@ -91,17 +91,13 @@
      * @example result(0) // 0
      * @example result([1], 0) // 1
      */
-    aok['result'] = function(o, k) {
+    function result(o, k) {
         2 == arguments.length ? k = o[k] : (k = o, o = this);
         return typeof k == 'function' ? k.call(o) : k;
-    };
-    
-    /**
-     * @this {Object}
-     * @param {string|number} k
-     */
+    }
+    aok['result'] = result;
     aok.prototype['result'] = function(k) {
-        return aok['result'].apply(null, 2 == arguments.length ? arguments : [this, k]);
+        return result.apply(aok, 2 == arguments.length ? arguments : [this, k]);
     };
 
     /**
