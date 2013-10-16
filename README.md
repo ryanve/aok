@@ -1,7 +1,8 @@
-[aok](https://github.com/ryanve/aok)
-===
+# [aok](https://github.com/ryanve/aok)
 
-## api
+#### Extensible JavaScript test suite [module](https://npmjs.org/package/aok)
+
+## API ([1.4](../../releases))
 
 ### `aok(testObject)`
 
@@ -11,11 +12,13 @@
 - **test**: result or callback (called in `testObject`'s scope)
 - **pass**: message or callback (default: "Pass")
 - **fail**: message or callback (default: "Fail")
-- **handler**: defaults to [`aok.prototype.handler`](./aok.js)
-- **express**: defaults to [`aok.prototype.express`](./aok.js)
-- **run**: defaults to [`aok.prototype.run`](./aok.js)
-- **cull**: defaults to [`aok.prototype.cull`](./aok.js)
-- **init**: defaults to [`aok.prototype.init`](./aok.js)
+- **handler**: defaults to `aok.prototype.handler`
+- **express**: defaults to `aok.prototype.express`
+- **explain**: defaults to `aok.prototype.explain`
+- **result**: defaults to `aok.prototype.result`
+- **run**: defaults to `aok.prototype.run`
+- **cull**: defaults to `aok.prototype.cull`
+- **init**: defaults to `aok.prototype.init`
 
 #### syntax
 
@@ -51,11 +54,11 @@ aok(function() {
 ### utilities
 
 - `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
-- `aok.explain(item)` - Represent `item` as a string.
-- `aok.result(object, key)` or `aok.result.call(scope, item)` - Call `item` if it is a function.
+- `aok.explain(item?)` Represent `item` (or `this`) as a string.
+- `aok.result(object, key)` Call `object[key]` if it is a function.
+- `aok.result.call(scope, item)` Call `item` if it is a function.
+- `aok.prototype.result(key)` Call `this[key]` if it is a function.
 
-## license
-
-### [aok](http://github.com/ryanve/aok) is available under the [MIT license](http://en.wikipedia.org/wiki/MIT_License)
+## [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 Copyright (C) 2013 by [Ryan Van Etten](https://github.com/ryanve)

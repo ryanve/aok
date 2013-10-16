@@ -14,7 +14,7 @@
       
     /**
      * @constructor 
-     * @param  {*=}  data
+     * @param {*=} data
      */
     function Aok(data) {
         // Own 'test' unless instantiated w/o args,
@@ -27,7 +27,7 @@
     }
 
     /**
-     * @param  {*=}  data
+     * @param {*=} data
      * @return {Aok}
      */
     function aok(data) {
@@ -44,9 +44,9 @@
     // Console abstractions
     (function(target, console, hasAlert, win) {
         /**
-         * @param  {string}            name
-         * @param  {(boolean|number)=} force
-         * @param  {string=}           key
+         * @param {string} name
+         * @param {(boolean|number)=} force
+         * @param {string=} key
          */
         function assign(name, force, key) {
             var method = console && typeof console[name] == 'function' ? function() {
@@ -71,28 +71,36 @@
     aok.prototype['express'] = aok['express'];
     
     /**
-     * @param  {*}  item
+     * @param {*=} item
      * @return {string}
      */
-    function explain(item) {
-        return '' + (item === Object(item) ? toString.call(item) : item);
-    }
-    aok['explain'] = explain;
+    aok.prototype['explain'] = aok['explain'] = function(item) {
+        item = arguments.length ? item : this;
+        return item === Object(item) ? toString.call(item) : '' + item;
+    };
     
     /**
-     * @param {Function|Object|*} o
-     * @param {(string|number)=}  k  
-     * @example result(0)      // 0
+     * @param {*} o
+     * @param {(string|number)=} k
+     * @example result(0) // 0
      * @example result([1], 0) // 1
      */
-    function result(o, k) {
-        return 2 == arguments.length ? result.call(o, o[k]) : typeof o == 'function' ? o.call(this) : o;
-    }
-    aok['result'] = result;
+    aok['result'] = function(o, k) {
+        2 == arguments.length ? k = o[k] : (k = o, o = this);
+        return typeof k == 'function' ? k.call(o) : k;
+    };
+    
+    /**
+     * @this {Object}
+     * @param {string|number} k
+     */
+    aok.prototype['result'] = function(k) {
+        return aok['result'].apply(null, 2 == arguments.length ? arguments : [this, k]);
+    };
 
     /**
      * Get a new function that uses try/catch to test if `fn` can run.
-     * @param  {Function|string} fn  callback or key
+     * @param {Function|string} fn callback or key
      * @return {Function}
      */
     aok['can'] = function(fn) {
@@ -119,7 +127,7 @@
      */
     aok.prototype['run'] = function() {
         if (this === globe) throw new Error('@this');
-        this['test'] = !!result(this, 'test'); // Run the test.
+        this['test'] = !!this['result']('test');
         return this['handler'](); // Trigger the handler.
     };
     
@@ -139,8 +147,8 @@
         if (typeof msg == 'function') {
             msg.call(this);
         } else {
-            msg = explain(msg);
-            owns.call(this, 'remark') && (msg += ' (' + explain(this['remark']) + ')');
+            msg = this['explain'](msg);
+            owns.call(this, 'remark') && (msg += ' (' + this['explain'](this['remark']) + ')');
             this['express']('#' + this['id'] + ': ' + msg); 
         }
         return this;

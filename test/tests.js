@@ -1,5 +1,5 @@
 (function(aok) {
-    var instance = aok();
+    var plain = {}, instance = aok();
     aok(function() {
         return isFinite(this.id);
     });
@@ -14,6 +14,10 @@
     aok({
         id: 'instance',
         test: instance instanceof aok
+    });
+    aok({
+        id: 'explain',
+        test: '0' === aok.explain(0) && plain.toString.call(aok) === aok.explain()
     });
     aok({
         id: 'cull',
@@ -38,6 +42,10 @@
     aok({
         id: 'resultReturn',
         test: 1 === aok.result(1) && 1 === aok.result([1], 0)
+    });
+    aok({
+        id: 'resultProto',
+        test: 1 === aok.prototype.result.call([1], 0)
     });
     aok({
         id: 'can',
