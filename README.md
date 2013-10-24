@@ -2,7 +2,7 @@
 
 #### Extensible JavaScript test suite [module](https://npmjs.org/package/aok)
 
-## API ([1.4](../../releases))
+## API ([1.5](../../releases))
 
 ### `aok(testObject)`
 
