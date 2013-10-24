@@ -1,4 +1,4 @@
-(function(aok) {
+!function(aok) {
     var plain = {}, instance = aok();
     aok(function() {
         return isFinite(this.id);
@@ -53,4 +53,4 @@
             throw new Error;
         })()
     });
-}(this.aok));
+}(this.aok || require('../src/aok'));
