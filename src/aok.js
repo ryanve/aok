@@ -110,7 +110,8 @@
     };
 
     /**
-     * @return {Aok}
+     * @this {Aok|Object}
+     * @return {Aok|Object}
      */
     aok.prototype['init'] = function() {
         if (this === globe) throw new Error('@this');
@@ -120,7 +121,8 @@
     };
     
     /**
-     * @return {Aok}
+     * @this {Aok|Object}
+     * @return {Aok|Object}
      */
     aok.prototype['run'] = function() {
         if (this === globe) throw new Error('@this');
@@ -129,7 +131,8 @@
     };
     
     /**
-     * @param  {(string|number)=}    key
+     * @this {Aok|Object}
+     * @param {(string|number)=} key
      */
     aok.prototype['cull'] = function(key) {
         return this[this[null == key ? 'test' : key] ? 'pass' : 'fail'];
