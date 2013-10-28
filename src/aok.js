@@ -81,12 +81,13 @@
     
     /**
      * @param {*} o
-     * @param {(string|number)=} k
+     * @param {(string|number|Function)=} k
      * @example result(0) // 0
      * @example result([1], 0) // 1
      */
     function result(o, k) {
-        2 == arguments.length ? k = o[k] : (k = o, o = this);
+        if (2 != arguments.length) k = o, o = this;
+        else typeof k == 'function' ? k : k = o[k];
         return typeof k == 'function' ? k.call(o) : k;
     }
     aok['result'] = result;
