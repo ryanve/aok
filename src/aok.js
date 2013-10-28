@@ -122,13 +122,16 @@
     };
     
     /**
+     * Run test and trigger its handler.
      * @this {Aok|Object}
      * @return {Aok|Object}
      */
     implement['run'] = function() {
         if (this === globe) throw new Error('@this');
-        this['test'] = !!this['result']('test');
-        return this['handler'](); // Trigger the handler.
+        var use = this['result'], at = 'test';
+        use = typeof use == 'function' ? use.call(this, at) : result(this, at);
+        this[at] = !!use;
+        return this['handler']();
     };
     
     /**
