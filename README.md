@@ -15,7 +15,6 @@
 - **handler**: defaults to `aok.prototype.handler`
 - **express**: defaults to `aok.prototype.express`
 - **explain**: defaults to `aok.prototype.explain`
-- **result**: defaults to `aok.prototype.result`
 - **run**: defaults to `aok.prototype.run`
 - **cull**: defaults to `aok.prototype.cull`
 - **init**: defaults to `aok.prototype.init`
@@ -57,7 +56,6 @@ aok(function() {
 - `aok.explain(item?)` Represent `item` (or `this`) as a string.
 - `aok.result(object, key)` Call `object[key]` if it is a function.
 - `aok.result.call(scope, item)` Call `item` if it is a function.
-- `aok.prototype.result(key)` Call `this[key]` if it is a function.
 
 ## [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
