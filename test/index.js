@@ -1,5 +1,8 @@
 !function(aok) {
     var plain = {}, instance = aok();
+    function called() {
+        return !arguments.length && this;
+    }
     aok(function() {
         return isFinite(this.id);
     });
@@ -35,13 +38,15 @@
     });
     aok({
         id: 'resultParams',
-        test: aok.result(function() {
-            return !arguments.length && aok === this;
-        })
+        test: aok.result(called) === aok
     });
     aok({
         id: 'resultReturn',
         test: 1 === aok.result(1) && 1 === aok.result([1], 0)
+    });
+    aok({
+        id: 'resultDirect',
+        test: aok.result(instance, called) === instance
     });
     aok({
         id: 'resultProto',
