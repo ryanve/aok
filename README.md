@@ -54,8 +54,7 @@ aok(function() {
 
 - `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
 - `aok.explain(item?)` Represent `item` (or `this`) as a string.
-- `aok.result(object, key)` Call `object[key]` if it is a function.
-- `aok.result.call(scope, item)` Call `item` if it is a function.
+- `aok.result(object, key|fn)` Call `fn.call(object)` or `object[key]` if callable.
 
 ## [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
