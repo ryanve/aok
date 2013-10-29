@@ -1,5 +1,5 @@
 /*!
- * aok 1.5.0+201310240144
+ * aok 1.5.1+201310282359
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
@@ -8,7 +8,8 @@
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
 
-    var globe = (function() { return this; }())
+    var implement
+      , globe = (function() { return this; }())
       , plain = {}
       , owns = plain.hasOwnProperty
       , toString = plain.toString
@@ -40,12 +41,8 @@
         return arguments.length ? new Aok(data) : new Aok; 
     }
     
-    // Sync the prototypes
-    aok.prototype = Aok.prototype;
-    
-    // Default messages
-    aok.prototype['pass'] = 'Pass';
-    aok.prototype['fail'] = 'Fail';
+    // Sync the prototypes and alias to local.
+    implement = aok.prototype = Aok.prototype;
     
     // Console abstractions
     (function(target, console, hasAlert, win) {
@@ -72,31 +69,36 @@
         assign('log', 0, 'express');
     }(aok, nativeConsole, hasAlert, win));
     
-    // Alias the "express" method. `aok.prototype.express` is used in the 
-    // default handler. Override it as needed for customization.
-    aok.prototype['express'] = aok['express'];
+    // Default messages
+    implement['pass'] = 'Pass';
+    implement['fail'] = 'Fail';
+    
+    // Alias the "express" method to the prototype for usage from
+    // the default handler. Override as needed for customization.
+    implement['express'] = aok['express'];
     
     /**
      * @param {*=} item
      * @return {string}
      */
-    aok.prototype['explain'] = aok['explain'] = function(item) {
+    implement['explain'] = aok['explain'] = function(item) {
         item = arguments.length ? item : this;
         return item === Object(item) ? toString.call(item) : '' + item;
     };
     
     /**
      * @param {*} o
-     * @param {(string|number)=} k
+     * @param {(string|number|Function)=} k
      * @example result(0) // 0
      * @example result([1], 0) // 1
      */
     function result(o, k) {
-        2 == arguments.length ? k = o[k] : (k = o, o = this);
+        if (2 != arguments.length) k = o, o = this;
+        else typeof k == 'function' ? k : k = o[k];
         return typeof k == 'function' ? k.call(o) : k;
     }
     aok['result'] = result;
-    aok.prototype['result'] = function(k) {
+    implement['result'] = function(k) {
         return result.apply(aok, 2 == arguments.length ? arguments : [this, k]);
     };
 
@@ -115,9 +117,10 @@
     };
 
     /**
-     * @return {Aok}
+     * @this {Aok|Object}
+     * @return {Aok|Object}
      */
-    aok.prototype['init'] = function() {
+    implement['init'] = function() {
         if (this === globe) throw new Error('@this');
         owns.call(this, 'id') || (this['id'] = ++uid);
         owns.call(this, 'test') && this['run']();
@@ -125,18 +128,23 @@
     };
     
     /**
-     * @return {Aok}
+     * Run test and trigger its handler.
+     * @this {Aok|Object}
+     * @return {Aok|Object}
      */
-    aok.prototype['run'] = function() {
+    implement['run'] = function() {
         if (this === globe) throw new Error('@this');
-        this['test'] = !!this['result']('test');
-        return this['handler'](); // Trigger the handler.
+        var use = this['result'], at = 'test';
+        use = typeof use == 'function' ? use.call(this, at) : result(this, at);
+        this[at] = !!use;
+        return this['handler']();
     };
     
     /**
-     * @param  {(string|number)=}    key
+     * @this {Aok|Object}
+     * @param {(string|number)=} key
      */
-    aok.prototype['cull'] = function(key) {
+    implement['cull'] = function(key) {
         return this[this[null == key ? 'test' : key] ? 'pass' : 'fail'];
     };
 
@@ -144,7 +152,7 @@
      * default handler can be overridden
      * @return {Aok}
      */
-    aok.prototype['handler'] = function() {
+    implement['handler'] = function() {
         var msg = this['cull']();
         if (typeof msg == 'function') {
             msg.call(this);
@@ -157,7 +165,7 @@
     };
     
     /**
-     * @param  {string}  n   
+     * @param {string} n   
      * @return {Node|boolean}
      */
     aok['id'] = function(n) {
