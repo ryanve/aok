@@ -1,5 +1,5 @@
 /*!
- * aok 1.5.1+201310282359
+ * aok 1.5.2+201310310237
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
