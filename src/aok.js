@@ -3,7 +3,7 @@
 }(this, 'aok', function() {
 
     var implement
-      , globe = (function() { return this; }())
+      , globe = this
       , plain = {}
       , owns = plain.hasOwnProperty
       , toString = plain.toString
