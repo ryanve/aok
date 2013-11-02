@@ -1,5 +1,5 @@
 /*!
- * aok 1.5.2+201311020339
+ * aok 1.5.3+201311020500
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
@@ -20,6 +20,9 @@
       , uid = 0
       , has = function(o, k) {
             return owns.call(o, k);
+        }
+      , assign = function(to, from) {
+            for (var k in from) has(from, k) && (to[k] = from[k]);
         };
       
     /**
@@ -30,9 +33,8 @@
         // Own 'test' unless instantiated w/o args,
         // or unless `data` is 'object' w/o 'test'.
         // Running proceeds only if 'test' is owned.
-        if (data && typeof data == 'object')
-            for (var k in data) has(data, k) && (this[k] = data[k]); 
-        else arguments.length && (this['test'] = data);
+        if (typeof data == 'object' && data) assign(this, data);
+        else if (arguments.length) this['test'] = data;
         this['init']();
     }
 

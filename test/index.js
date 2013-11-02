@@ -65,4 +65,4 @@
         id: '.result',
         test: 1 === aok.prototype.result.call([1], 0)
     });
-}(this.aok || require('../src/aok'));
+}(this.aok || require('../src'));
