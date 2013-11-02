@@ -7,6 +7,16 @@
         return isFinite(this.id);
     });
     aok({
+        id: 'can',
+        test: true === aok.can(aok)() && false === aok.can(function() {
+            throw new Error;
+        })()
+    });
+    aok({
+        id: 'safeGlobe',
+        test:!aok.can(aok().run)()
+    });
+    aok({
         id: 'handler',
         test: false,
         handler: function() {
@@ -51,11 +61,5 @@
     aok({
         id: 'resultProto',
         test: 1 === aok.prototype.result.call([1], 0)
-    });
-    aok({
-        id: 'can',
-        test: true === aok.can(aok)() && false === aok.can(function() {
-            throw new Error;
-        })()
     });
 }(this.aok || require('../src/aok'));
