@@ -11,7 +11,10 @@
       , doc = typeof document != 'undefined' && document
       , nativeConsole = typeof console != 'undefined' && console
       , hasAlert = win && 'alert' in win
-      , uid = 0;
+      , uid = 0
+      , has = function(o, k) {
+            return owns.call(o, k);
+        };
       
     /**
      * @constructor 
@@ -22,7 +25,7 @@
         // or unless `data` is 'object' w/o 'test'.
         // Running proceeds only if 'test' is owned.
         if (data && typeof data == 'object')
-            for (var k in data) owns.call(data, k) && (this[k] = data[k]); 
+            for (var k in data) has(data, k) && (this[k] = data[k]); 
         else arguments.length && (this['test'] = data);
         this['init']();
     }
@@ -116,8 +119,8 @@
      */
     implement['init'] = function() {
         if (this === globe) throw new Error('@this');
-        owns.call(this, 'id') || (this['id'] = ++uid);
-        owns.call(this, 'test') && this['run']();
+        has(this, 'id') || (this['id'] = ++uid);
+        has(this, 'test') && this['run']();
         return this;
     };
     
@@ -152,7 +155,7 @@
             msg.call(this);
         } else {
             msg = this['explain'](msg);
-            owns.call(this, 'remark') && (msg += ' (' + this['explain'](this['remark']) + ')');
+            has(this, 'remark') && (msg += ' (' + this['explain'](this['remark']) + ')');
             this['express']('#' + this['id'] + ': ' + msg); 
         }
         return this;
