@@ -3,8 +3,11 @@
     function called() {
         return !arguments.length && this;
     }
+    function isNatural(n) {
+        return 0 < n && n === (n >> 0);
+    }
     aok(function() {
-        return isFinite(this.id);
+        return isNatural(this.id) && (this.id = '.id');
     });
     aok({
         id: 'can',
@@ -17,7 +20,7 @@
         test:!aok.can(aok().run)()
     });
     aok({
-        id: 'handler',
+        id: '.handler',
         test: false,
         handler: function() {
             this.test = this instanceof aok;
@@ -41,7 +44,7 @@
         }
     });
     aok({
-        id: 'remark',
+        id: '.remark',
         test: function() {
             return this.remark = {};
         }
@@ -59,7 +62,7 @@
         test: aok.result(instance, called) === instance
     });
     aok({
-        id: 'resultProto',
+        id: '.result',
         test: 1 === aok.prototype.result.call([1], 0)
     });
 }(this.aok || require('../src/aok'));
