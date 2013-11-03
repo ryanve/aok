@@ -44,12 +44,6 @@
         }
     });
     aok({
-        id: '.remark',
-        test: function() {
-            return this.remark = {};
-        }
-    });
-    aok({
         id: 'resultParams',
         test: aok.result(called) === aok
     });

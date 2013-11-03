@@ -151,13 +151,8 @@
      */
     implement['handler'] = function() {
         var msg = this['cull']();
-        if (typeof msg == 'function') {
-            msg.call(this);
-        } else {
-            msg = this['explain'](msg);
-            has(this, 'remark') && (msg += ' (' + this['explain'](this['remark']) + ')');
-            this['express']('#' + this['id'] + ': ' + msg); 
-        }
+        if (typeof msg == 'function') msg.call(this);
+        else this['express']('#' + this['id'] + ': ' + this['explain'](msg));
         return this;
     };
     
