@@ -66,6 +66,7 @@
         abstracts('info', 1);
         abstracts('warn', 1);
         abstracts('error', 1);
+        abstracts('clear', 0, function() {});
         abstracts('assert', 1, function(exp, msg) {
             exp || abstracted['warn'](msg);
         });

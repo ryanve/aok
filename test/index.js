@@ -102,10 +102,10 @@
         test:function() {
             if (!aok.console) return;
             browse && aok.info('#' + this.id + ':');
-            return !aok.fail(['trace', 'assert', 'error', 'warn', 'info', 'log'], function(n) {
+            return !aok.fail(['clear', 'trace', 'assert', 'error', 'warn', 'info', 'log'], function(n) {
                 var f = this.console[n];
                 if (typeof f == 'function' && f === this[n] && typeof f.force == 'boolean') {
-                    browse && f('...' + n);
+                    browse && n !== 'clear' && f('...' + n);
                     return true;
                 }
             }, aok, 1);
