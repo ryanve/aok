@@ -62,10 +62,6 @@
         test: aok.result(instance, called) === instance
     });
     aok({
-        id: '.result',
-        test: 1 === aok.prototype.result.call([1], 0)
-    });
-    aok({
         id: 'console',
         test:function() {
             var f, n, a, o = aok.console, browser = typeof window != 'undefined';

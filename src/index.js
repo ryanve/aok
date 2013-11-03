@@ -100,9 +100,6 @@
         return typeof k == 'function' ? k.call(o) : k;
     }
     aok['result'] = result;
-    implement['result'] = function(k) {
-        return result.apply(aok, 2 == arguments.length ? arguments : [this, k]);
-    };
 
     /**
      * Get a new function that uses try/catch to test if `fn` can run.
@@ -136,9 +133,7 @@
      */
     implement['run'] = function() {
         if (this === globe) throw new Error('@this');
-        var use = this['result'], at = 'test';
-        use = typeof use == 'function' ? use.call(this, at) : result(this, at);
-        this[at] = !!use;
+        this['test'] = !!result(this, 'test');
         return this['handler']();
     };
     
