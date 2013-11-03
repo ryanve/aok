@@ -48,6 +48,7 @@ aok(function() {
 - `aok.info(message)`
 - `aok.warn(message)`
 - `aok.error(message)`
+- `aok.assert(expression, message)` @since [1.6.0](../../releases/tag/1.6.0)
 - `aok.trace()`
 
 ### utilities
