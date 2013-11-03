@@ -1,5 +1,5 @@
 /*!
- * aok 1.6.0+201311030705
+ * aok 1.6.1+201311030740
  * https://github.com/ryanve/aok
  * MIT License 2013 Ryan Van Etten
  */
@@ -100,11 +100,10 @@
      * @param {Object=} guard array methods
      * @example result([1], 0) // 1
      */
-    function result(o, k, guard) {
+    aok['result'] = function(o, k, guard) {
         guard || k === guard ? (k = o, o = this) : (typeof k == 'function' ? k : k = o[k]);
         return typeof k == 'function' ? k.call(o) : k;
-    }
-    aok['result'] = result;
+    };
 
     /**
      * Get a new function that uses try/catch to test if `fn` can run.
@@ -138,7 +137,7 @@
      */
     implement['run'] = function() {
         if (this === globe) throw new Error('@this');
-        this['test'] = !!result(this, 'test');
+        this['test'] = !!aok['result'](this, 'test');
         return this['handler']();
     };
     
