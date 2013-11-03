@@ -68,27 +68,14 @@
     aok({
         id: 'console',
         test:function() {
-            var n, a, o = aok.console;
+            var f, n, a, o = aok.console, browser = typeof window != 'undefined';
             if (!o) return;
-            for (a = ['log', 'info', 'warn', 'error', 'trace', 'assert']; n = a.pop();) {
-                if (typeof o[n] != 'function' || o[n] !== aok[n]) return;
-                if (typeof o[n].force != 'boolean') return;
+            browser && o.info('#' + this.id + ':');
+            for (a = ['trace', 'assert', 'error', 'warn', 'info', 'log']; n = a.pop();) {
+                if (typeof(f = o[n]) != 'function' || f !== aok[n] || typeof f.force != 'boolean') return;
+                browser && f('...' + n);
             }
             return true;
         }
     });
 }(this.aok || require('../src'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
