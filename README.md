@@ -2,7 +2,7 @@
 
 #### Extensible JavaScript test suite [module](https://npmjs.org/package/aok)
 
-## API ([1.6](../../releases))
+## API ([1.7](../../releases))
 
 ### `aok(testObject)`
 
@@ -48,12 +48,18 @@ aok(function() {
 - `aok.info(message)`
 - `aok.warn(message)`
 - `aok.error(message)`
-- `aok.assert(expression, message)` @since [1.6.0](../../releases/tag/1.6.0)
+- `aok.assert(expression, message)` <b>1.6+</b>
 - `aok.trace()`
+- `aok.clear()` <b>1.7+</b>
 
 ### utilities
 
+
 - `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
+- `aok.pass(stack, test, scope?, limit?)` Iterate `stack` to count <b>passes</b> until `limit`.
+- `aok.fail(stack, test, scope?, limit?)` Iterate `stack` to count <b>fails</b> until `limit`.
+- `aok.race(trials, rivals)` Test how long it takes each rival to run `trials` times.
+- `aok.perform(trials, fn)` Test how long it takes for `fn` to run `trials` times.
 - `aok.explain(item?)` Represent `item` (or `this`) as a string.
 - `aok.result(object, key|fn)` Call `fn.call(object)` or `object[key]` if callable.
 
