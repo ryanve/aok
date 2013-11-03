@@ -72,6 +72,34 @@
         return abstracted;
     }({}, nativeConsole, hasAlert, win)));
     
+    /**
+     * @param {{length:number}} stack
+     * @param {Function|number} fn
+     * @param {*=} scope
+     * @param {number=} limit
+     * @return {number} passes
+     */
+    aok['pass'] = function(stack, fn, scope, limit) {
+        if (typeof fn == 'number') return stack ? 1 : 0;
+        var l = stack.length, i = 0, n = 0;
+        while (i < l) if (fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
+        return n;
+    };
+    
+    /**
+     * @param {{length:number}} stack
+     * @param {Function|number} fn
+     * @param {*=} scope
+     * @param {number=} limit
+     * @return {number} fails
+     */
+    aok['fail'] = function(stack, fn, scope, limit) {
+        if (typeof fn == 'number') return stack ? 0 : 1;
+        var l = stack.length, i = 0, n = 0;
+        while (i < l) if (!fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
+        return n;
+    };
+    
     // Alias the "express" method to the prototype for usage with tests.
     implement['express'] = aok['express'] = clone(aok['log']);
     

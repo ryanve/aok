@@ -1,23 +1,27 @@
 !function(aok) {
-    var plain = {}, instance = aok();
+    var plain = {}, instance = aok(), browse = typeof window != 'undefined', es5 = 'reduce' in [];
     function called() {
         return !arguments.length && this;
     }
     function isNatural(n) {
         return 0 < n && n === (n >> 0);
     }
-    aok(function() {
-        return isNatural(this.id) && (this.id = '.id');
-    });
     aok({
-        id: 'can',
+        id: '#can',
         test: true === aok.can(aok)() && false === aok.can(function() {
             throw new Error;
         })()
     });
     aok({
-        id: 'safeGlobe',
+        id: 'safe',
         test:!aok.can(aok().run)()
+    });
+    aok({
+        id: 'instance',
+        test: instance instanceof aok
+    });
+    aok(function() {
+        return isNatural(this.id) && (this.id = '.id');
     });
     aok({
         id: '.handler',
@@ -28,15 +32,7 @@
         }
     });
     aok({
-        id: 'instance',
-        test: instance instanceof aok
-    });
-    aok({
-        id: 'explain',
-        test: '0' === aok.explain(0) && plain.toString.call(aok) === aok.explain()
-    });
-    aok({
-        id: 'cull',
+        id: '.cull',
         test: function() {
             var culled = this.cull();
             this.remark = culled;
@@ -44,24 +40,54 @@
         }
     });
     aok({
-        id: 'resultParams',
-        test: aok.result(called) === aok && aok.result(instance, called) === instance
+        id: '#pass',
+        test: 1 === aok.pass([0], function(v, i, a) {
+            var ones = [1, 1], emp = [], mix = [0, 1, 0, 1, 1];
+            if (2 !== aok.pass(ones, isNatural)) return;
+            if (0 !== aok.pass(emp, isNatural)) return;
+            if (2 !== aok.pass(mix, isNatural, null, 2)) return;
+            if (es5 && !ones.every(aok.pass)) return;
+            if (es5 && mix.filter(aok.pass).length !== aok.pass(mix, aok.pass)) return;
+            return this === aok && a[i] === v;
+        }, aok)
     });
     aok({
-        id: 'resultReturn',
-        test: 1 === aok.result(1) && 1 === aok.result([1], 0)
+        id: '#fail',
+        test: 1 === aok.pass([0], function(v, i, a) {
+            var zeds = [0, 0], emp = [], mix = [0, 1, 0, 1, 1];
+            if (2 !== aok.fail(zeds, isNatural)) return;
+            if (0 !== aok.fail(emp, isNatural)) return;
+            if (2 !== aok.fail(mix, isNatural, null, 2)) return;
+            if (es5 && !zeds.every(aok.fail)) return;
+            if (es5 && mix.filter(aok.fail).length !== aok.pass(mix, aok.fail)) return;
+            return this === aok && a[i] === v;
+        }, aok)
     });
     aok({
-        id: 'console',
+        id: '#result',
+        test: !aok.fail([
+            aok.result(called) === aok
+          , aok.result(instance, called) === instance
+          , 1 === aok.result(1)
+          , 1 === aok.result([1], 0)
+        ], aok.pass)
+    });
+    aok({
+        id: '#explain',
+        test: '0' === aok.explain(0) && plain.toString.call(aok) === aok.explain()
+    });
+    aok({
+        id: '#console',
         test:function() {
-            var f, n, a, o = aok.console, browser = typeof window != 'undefined';
-            if (!o) return;
-            browser && o.info('#' + this.id + ':');
-            for (a = ['trace', 'assert', 'error', 'warn', 'info', 'log']; n = a.pop();) {
-                if (typeof(f = o[n]) != 'function' || f !== aok[n] || typeof f.force != 'boolean') return;
-                browser && f('...' + n);
-            }
-            return true;
+            if (!aok.console) return;
+            browse && aok.info('#' + this.id + ':');
+            return !aok.fail(['trace', 'assert', 'error', 'warn', 'info', 'log'], function(n) {
+                var f = this.console[n];
+                if (typeof f == 'function' && f === this[n] && typeof f.force == 'boolean') {
+                    browse && f('...' + n);
+                    return true;
+                }
+            }, aok, 1);
         }
     });
 }(this.aok || require('../src'));
