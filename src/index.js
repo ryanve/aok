@@ -167,11 +167,35 @@
         while (i < l) if (!fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
         return n;
     };
+    
+    /**
+     * @this {*} scope to run in
+     * @param {number} trials
+     * @param {Function} fn
+     * @return {number} millisecond time for `fn` to run `trials` times
+     */
+    aok['perform'] = function(trials, fn) {
+        var i = 0, time = +new Date;
+        while (i++ < trials) fn.call(this);
+        return +new Date - time;
+    };
+    
+    /**
+     * @this {*} scope to run in
+     * @param {number} trials
+     * @param {Array|Function} rivals
+     * @return {Array} millisecond map of each `rivals` item's time
+     */
+    aok['race'] = function(trials, rivals) {
+        rivals = [].concat(rivals); // map
+        for (var go = aok['perform'], l = rivals.length, i = 0; i < l;)
+            rivals[i] = go.call(this, trials, rivals[i++]);
+        return rivals; // scores
+    };
 
     /**
-     * Get a new function that uses try/catch to test if `fn` can run.
      * @param {Function|string} fn callback or key
-     * @return {Function}
+     * @return {Function} uses try/catch to test if `fn` can run
      */
     aok['can'] = function(fn) {
         return function() {

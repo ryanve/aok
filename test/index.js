@@ -1,5 +1,8 @@
 !function(aok) {
-    var plain = {}, instance = aok(), browse = typeof window != 'undefined', es5 = 'reduce' in [];
+    var plain = {}, instance = aok()
+      , es5 = Array.isArray ? 'reduce' in [] : 0
+      , browse = typeof window != 'undefined';
+
     function called() {
         return !arguments.length && this;
     }
@@ -75,6 +78,24 @@
     aok({
         id: '#explain',
         test: '0' === aok.explain(0) && plain.toString.call(aok) === aok.explain()
+    });
+    aok({
+        id: '#perform',
+        test: function() {
+            var time, trials = 5, ran = 0;
+            time = aok.perform(trials, function() { ran++; });
+            return time === +time && trials === ran;
+        }
+    });
+    aok({
+        id: '#race',
+        test: function() {
+            var times, trials = 5, a = 0, b = 0, rivals = [function() { a++; }, function() { b++; }];
+            times = aok.race(trials, rivals);
+            if (es5 ? !Array.isArray(times) : !times) return;
+            if (rivals.length !== times.length) return;
+            return a === trials && b === trials && !aok.fail(times, isFinite, null, 1);
+        }
     });
     aok({
         id: '#console',
