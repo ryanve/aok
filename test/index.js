@@ -45,15 +45,11 @@
     });
     aok({
         id: 'resultParams',
-        test: aok.result(called) === aok
+        test: aok.result(called) === aok && aok.result(instance, called) === instance
     });
     aok({
         id: 'resultReturn',
         test: 1 === aok.result(1) && 1 === aok.result([1], 0)
-    });
-    aok({
-        id: 'resultDirect',
-        test: aok.result(instance, called) === instance
     });
     aok({
         id: 'console',
