@@ -30,9 +30,9 @@ aok({
 });
 ```
 
-#### shorthand
+##### Shorthand
 
-If `testObject` is a non-object, then its value becomes the `.test`:
+###### Non-objects become the `.test`
 
 ```js
 aok(typeof aok == 'function');
@@ -54,15 +54,14 @@ aok(function() {
 
 ### utilities
 
-
 - `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
 - `aok.pass(stack, test, scope?, limit?)` Iterate `stack` to count <b>passes</b> until `limit`.
 - `aok.fail(stack, test, scope?, limit?)` Iterate `stack` to count <b>fails</b> until `limit`.
 - `aok.race(trials, rivals)` Test how long it takes each rival to run `trials` times.
 - `aok.perform(trials, fn)` Test how long it takes for `fn` to run `trials` times.
 - `aok.explain(item?)` Represent `item` (or `this`) as a string.
-- `aok.result(object, key|fn)` Call `fn.call(object)` or `object[key]` if callable.
+- `aok.result(object, key|fn)` Call `object[key]` or `fn.call(object)` if callable.
 
-## [MIT License](http://en.wikipedia.org/wiki/MIT_License)
+## License: [MIT](http://en.wikipedia.org/wiki/MIT_License)
 
 Copyright (C) 2013 by [Ryan Van Etten](https://github.com/ryanve)
