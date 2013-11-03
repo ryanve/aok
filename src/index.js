@@ -91,12 +91,11 @@
     /**
      * @param {*} o
      * @param {(string|number|Function)=} k
-     * @example result(0) // 0
+     * @param {Object=} guard array methods
      * @example result([1], 0) // 1
      */
-    function result(o, k) {
-        if (2 != arguments.length) k = o, o = this;
-        else typeof k == 'function' ? k : k = o[k];
+    function result(o, k, guard) {
+        guard || k === guard ? (k = o, o = this) : (typeof k == 'function' ? k : k = o[k]);
         return typeof k == 'function' ? k.call(o) : k;
     }
     aok['result'] = result;
