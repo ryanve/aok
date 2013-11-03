@@ -17,6 +17,12 @@
         }
       , assign = function(to, from) {
             for (var k in from) has(from, k) && (to[k] = from[k]);
+            return to;
+        }
+      , clone = function(fn) {
+            return assign(function() {
+                fn.apply(this, arguments);
+            }, fn);
         };
       
     /**
@@ -44,37 +50,34 @@
     implement = aok.prototype = Aok.prototype;
     
     // Console abstractions
-    (function(target, console, hasAlert, win) {
-        /**
-         * @param {string} name
-         * @param {(boolean|number)=} force
-         * @param {string=} key
-         */
-        function assign(name, force, key) {
+    assign(aok, aok['console'] = (function(abstracted, console, hasAlert, win) {
+        function abstracts(name, force, fallback) {
             var method = console && typeof console[name] == 'function' ? function() {
                 console[name].apply(console, arguments);
-            } : hasAlert ? function() {
+            } : fallback ? fallback : hasAlert ? function() {
                 method['force'] && win.alert(name + ': ' + [].join.call(arguments, ' '));
             } : function() {};
             method['force'] = !!force;
-            target[key || name] = method;
+            abstracted[name] = method;
         }
-        
-        assign('info', 1);
-        assign('warn', 1);
-        assign('error', 1);
-        assign('trace');
-        assign('log');
-        assign('log', 0, 'express');
-    }(aok, nativeConsole, hasAlert, win));
+
+        abstracts('log');
+        abstracts('trace');
+        abstracts('info', 1);
+        abstracts('warn', 1);
+        abstracts('error', 1);
+        abstracts('assert', 1, function(exp, msg) {
+            exp || abstracted['warn'](msg);
+        });
+        return abstracted;
+    }({}, nativeConsole, hasAlert, win)));
+    
+    // Alias the "express" method to the prototype for usage with tests.
+    implement['express'] = aok['express'] = clone(aok['log']);
     
     // Default messages
     implement['pass'] = 'Pass';
     implement['fail'] = 'Fail';
-    
-    // Alias the "express" method to the prototype for usage from
-    // the default handler. Override as needed for customization.
-    implement['express'] = aok['express'];
     
     /**
      * @param {*=} item

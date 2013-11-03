@@ -65,4 +65,30 @@
         id: '.result',
         test: 1 === aok.prototype.result.call([1], 0)
     });
+    aok({
+        id: 'console',
+        test:function() {
+            var n, a, o = aok.console;
+            if (!o) return;
+            for (a = ['log', 'info', 'warn', 'error', 'trace', 'assert']; n = a.pop();) {
+                if (typeof o[n] != 'function' || o[n] !== aok[n]) return;
+                if (typeof o[n].force != 'boolean') return;
+            }
+            return true;
+        }
+    });
 }(this.aok || require('../src'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
