@@ -72,74 +72,12 @@
         return abstracted;
     }({}, nativeConsole, hasAlert, win)));
     
-    /**
-     * @param {{length:number}} stack
-     * @param {Function|number} fn
-     * @param {*=} scope
-     * @param {number=} limit
-     * @return {number} passes
-     */
-    aok['pass'] = function(stack, fn, scope, limit) {
-        if (typeof fn == 'number') return stack ? 1 : 0;
-        var l = stack.length, i = 0, n = 0;
-        while (i < l) if (fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
-        return n;
-    };
-    
-    /**
-     * @param {{length:number}} stack
-     * @param {Function|number} fn
-     * @param {*=} scope
-     * @param {number=} limit
-     * @return {number} fails
-     */
-    aok['fail'] = function(stack, fn, scope, limit) {
-        if (typeof fn == 'number') return stack ? 0 : 1;
-        var l = stack.length, i = 0, n = 0;
-        while (i < l) if (!fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
-        return n;
-    };
-    
     // Alias the "express" method to the prototype for usage with tests.
     implement['express'] = aok['express'] = clone(aok['log']);
     
     // Default messages
     implement['pass'] = 'Pass';
     implement['fail'] = 'Fail';
-    
-    /**
-     * @param {*=} item
-     * @return {string}
-     */
-    implement['explain'] = aok['explain'] = function(item) {
-        item = arguments.length ? item : this;
-        return item === Object(item) ? toString.call(item) : '' + item;
-    };
-    
-    /**
-     * @param {*} o
-     * @param {(string|number|Function)=} k
-     * @param {Object=} guard array methods
-     * @example result([1], 0) // 1
-     */
-    aok['result'] = function(o, k, guard) {
-        guard || k === guard ? (k = o, o = this) : (typeof k == 'function' ? k : k = o[k]);
-        return typeof k == 'function' ? k.call(o) : k;
-    };
-
-    /**
-     * Get a new function that uses try/catch to test if `fn` can run.
-     * @param {Function|string} fn callback or key
-     * @return {Function}
-     */
-    aok['can'] = function(fn) {
-        return function() {
-            try {
-                (typeof fn == 'string' ? this[fn] : fn).apply(this, arguments);
-            } catch (e) { return false; }
-            return true;
-        };
-    };
 
     /**
      * @this {Aok|Object}
@@ -180,6 +118,68 @@
         if (typeof msg == 'function') msg.call(this);
         else this['express']('#' + this['id'] + ': ' + this['explain'](msg));
         return this;
+    };
+    
+    /**
+     * @param {*=} item
+     * @return {string}
+     */
+    implement['explain'] = aok['explain'] = function(item) {
+        item = arguments.length ? item : this;
+        return item === Object(item) ? toString.call(item) : '' + item;
+    };
+    
+    /**
+     * @param {*} o
+     * @param {(string|number|Function)=} k
+     * @param {Object=} guard array methods
+     * @example result([1], 0) // 1
+     */
+    aok['result'] = function(o, k, guard) {
+        guard || k === guard ? (k = o, o = this) : (typeof k == 'function' ? k : k = o[k]);
+        return typeof k == 'function' ? k.call(o) : k;
+    };
+    
+    /**
+     * @param {{length:number}} stack
+     * @param {Function|number} fn
+     * @param {*=} scope
+     * @param {number=} limit
+     * @return {number} passes
+     */
+    aok['pass'] = function(stack, fn, scope, limit) {
+        if (typeof fn == 'number') return stack ? 1 : 0;
+        var l = stack.length, i = 0, n = 0;
+        while (i < l) if (fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
+        return n;
+    };
+    
+    /**
+     * @param {{length:number}} stack
+     * @param {Function|number} fn
+     * @param {*=} scope
+     * @param {number=} limit
+     * @return {number} fails
+     */
+    aok['fail'] = function(stack, fn, scope, limit) {
+        if (typeof fn == 'number') return stack ? 0 : 1;
+        var l = stack.length, i = 0, n = 0;
+        while (i < l) if (!fn.call(scope, stack[i], i++, stack) && ++n === limit) break;
+        return n;
+    };
+
+    /**
+     * Get a new function that uses try/catch to test if `fn` can run.
+     * @param {Function|string} fn callback or key
+     * @return {Function}
+     */
+    aok['can'] = function(fn) {
+        return function() {
+            try {
+                (typeof fn == 'string' ? this[fn] : fn).apply(this, arguments);
+            } catch (e) { return false; }
+            return true;
+        };
     };
     
     /**
