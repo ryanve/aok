@@ -4,12 +4,12 @@
 
 ## API ([1.7](../../releases))
 
-### `aok(testObject)`
+### aok(testObject)
 
-#### `testObject` properties
+#### <var>testObject</var> properties
 
 - **id**: identifier or name for the test (defaults to a positive integer)
-- **test**: result or callback (called in `testObject`'s scope)
+- **test**: result or callback (called in <var>testObject</var>'s scope)
 - **pass**: message or callback (default: "Pass")
 - **fail**: message or callback (default: "Fail")
 - **handler**: defaults to `aok.prototype.handler`
@@ -19,7 +19,9 @@
 - **cull**: defaults to `aok.prototype.cull`
 - **init**: defaults to `aok.prototype.init`
 
-#### syntax
+#### Syntax
+
+##### Objects
 
 ```js
 aok({
@@ -42,7 +44,7 @@ aok(function() {
 });
 ```
 
-### console methods
+### Console methods
 
 - `aok.log(message)`
 - `aok.info(message)`
@@ -52,15 +54,15 @@ aok(function() {
 - `aok.trace()`
 - `aok.clear()` <b>1.7+</b>
 
-### utilities
+### Utilities
 
-- `aok.can(fn)` Get a new function that uses `try`/`catch` to test if `fn` can run.
-- `aok.pass(stack, test, scope?, limit?)` Iterate `stack` to count <b>passes</b> until `limit`.
-- `aok.fail(stack, test, scope?, limit?)` Iterate `stack` to count <b>fails</b> until `limit`.
-- `aok.race(trials, rivals)` Test how long it takes each rival to run `trials` times.
-- `aok.perform(trials, fn)` Test how long it takes for `fn` to run `trials` times.
-- `aok.explain(item?)` Represent `item` (or `this`) as a string.
-- `aok.result(object, key|fn)` Call `object[key]` or `fn.call(object)` if callable.
+- `aok.can(fn)` Get a new function that uses `try`/`catch` to test if <var>fn</var> can run.
+- `aok.explain(item?)` Represent <var>item</var> (or self) as a string.
+- `aok.perform(trials, fn)` Test how many milliseconds it takes for <var>fn</var> to run <var>trials</var> times.
+- `aok.race(trials, rivals)` Test how many milliseconds it takes each rival to run <var>trials</var> times.
+- `aok.pass(stack, test, scope?, limit?)` Iterate <var>stack</var> to count <b>passes</b> until <var>limit</var>.
+- `aok.fail(stack, test, scope?, limit?)` Iterate <var>stack</var> to count <b>fails</b> until `limit`.
+- `aok.result(object, key|fn)` Get `object[key]` or its method's result if callable.
 
 ## License: [MIT](http://en.wikipedia.org/wiki/MIT_License)
 
