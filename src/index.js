@@ -8,7 +8,6 @@
       , owns = plain.hasOwnProperty
       , toString = plain.toString
       , win = typeof window != 'undefined' && window
-      , doc = typeof document != 'undefined' && document
       , nativeConsole = typeof console != 'undefined' && console
       , hasAlert = win && 'alert' in win
       , uid = 0
@@ -212,7 +211,7 @@
      * @return {Node|boolean}
      */
     aok['id'] = function(n) {
-        return doc.getElementById(n) || false;
+        return document.getElementById(n) || false;
     };
 
     return aok;
