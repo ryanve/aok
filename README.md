@@ -99,23 +99,6 @@ aok(function() {
 ##### Configure files to [require](http://nodejs.org/api/globals.html#globals_require)
 
 ```js
-grunt.initConfig({ 
-    aok: ['./test'] 
-});
-```
-
-##### Load the `'aok'` task
-```js
-grunt.loadNpmTasks('aok');
-```
-
-##### Run the `'aok'` task
-```sh
-$ grunt aok
-```
-
-##### Named tasks
-```js
 grunt.initConfig({
     aok: {
         test: ['./test/']
@@ -124,25 +107,33 @@ grunt.initConfig({
 });
 ```
 
-###### Run each by name
+##### Load task `'aok'`
+```js
+grunt.loadNpmTasks('aok');
+```
+
+##### Run `'aok'` tasks
+
 ```sh
+$ grunt aok
 $ grunt aok:test
 $ grunt aok:extras
 ```
-
 ## Resources
-- See the [<b>universal</b> GruntFile](https://github.com/ryanve/universal/blob/master/GruntFile.js) and [test dir](https://github.com/ryanve/universal/tree/master/test) for a solid setup
+- See a [<b>universal</b> GruntFile](https://github.com/ryanve/universal/blob/master/GruntFile.js) and [test dir](https://github.com/ryanve/universal/tree/master/test) for a solid setup
 - See test dirs in [<b>ryanve</b> packages](https://npmjs.org/~ryanve) for examples
 
 ## Developers
 
-#### <b>Contribute</b> by making edits in [`/src`](./src) or reporting [issues](../../issues).
+#### <b>Contribute</b> edits to [`/src`](./src) or report [issues](../../issues)
 
 ```sh
 $ npm install       # install dependencies
 $ grunt jshint:sub  # lint sub dirs
 $ grunt aok         # run tests
 ```
+
+Builds have <b>+</b>timestamp in the [version](http://semver.org/) number and are made later via `grunt`.
 
 ## Fund
 
