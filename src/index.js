@@ -2,7 +2,8 @@
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
 
-    var model
+    // Sync the prototype and use local alias
+    var model = aok.prototype = Aok.prototype
       , globe = this
       , plain = {}
       , owns = plain.hasOwnProperty
@@ -44,9 +45,6 @@
     function aok(data) {
         return arguments.length ? new Aok(data) : new Aok; 
     }
-    
-    // Sync the prototypes and alias to local.
-    model = aok.prototype = Aok.prototype;
     
     // Console abstractions
     assign(aok, aok['console'] = (function(abstracted, console, hasAlert, win) {
