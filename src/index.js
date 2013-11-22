@@ -2,7 +2,7 @@
     typeof module != 'undefined' && module['exports'] ? module['exports'] = make() : root[name] = make();
 }(this, 'aok', function() {
 
-    var implement
+    var model
       , globe = this
       , plain = {}
       , owns = plain.hasOwnProperty
@@ -46,7 +46,7 @@
     }
     
     // Sync the prototypes and alias to local.
-    implement = aok.prototype = Aok.prototype;
+    model = aok.prototype = Aok.prototype;
     
     // Console abstractions
     assign(aok, aok['console'] = (function(abstracted, console, hasAlert, win) {
@@ -73,17 +73,17 @@
     }({}, nativeConsole, hasAlert, win)));
     
     // Alias the "express" method to the prototype for usage with tests.
-    implement['express'] = aok['express'] = clone(aok['log']);
+    model['express'] = aok['express'] = clone(aok['log']);
     
     // Default messages
-    implement['pass'] = 'Pass';
-    implement['fail'] = 'Fail';
+    model['pass'] = 'Pass';
+    model['fail'] = 'Fail';
 
     /**
      * @this {Aok|Object}
      * @return {Aok|Object}
      */
-    implement['init'] = function() {
+    model['init'] = function() {
         if (this === globe) throw new Error('@this');
         has(this, 'id') || (this['id'] = ++uid);
         has(this, 'test') && this['run']();
@@ -95,7 +95,7 @@
      * @this {Aok|Object}
      * @return {Aok|Object}
      */
-    implement['run'] = function() {
+    model['run'] = function() {
         if (this === globe) throw new Error('@this');
         this['test'] = !!aok['result'](this, 'test');
         return this['handler']();
@@ -105,7 +105,7 @@
      * @this {Aok|Object}
      * @param {(string|number)=} key
      */
-    implement['cull'] = function(key) {
+    model['cull'] = function(key) {
         return this[this[null == key ? 'test' : key] ? 'pass' : 'fail'];
     };
 
@@ -113,7 +113,7 @@
      * default handler can be overridden
      * @return {Aok}
      */
-    implement['handler'] = function() {
+    model['handler'] = function() {
         var msg = this['cull']();
         if (typeof msg == 'function') msg.call(this);
         else this['express']('#' + this['id'] + ': ' + this['explain'](msg));
@@ -124,7 +124,7 @@
      * @param {*=} item
      * @return {string}
      */
-    implement['explain'] = aok['explain'] = function(item) {
+    model['explain'] = aok['explain'] = function(item) {
         item = arguments.length ? item : this;
         return item === Object(item) ? toString.call(item) : '' + item;
     };
