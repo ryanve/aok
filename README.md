@@ -7,7 +7,7 @@
 - [<b>Resources</b>](#resources)
 - [<b>Developers</b>](#developers)
 - [<b>Fund</b>](#fund)
-- [<b>License</b>](#license-mit)
+- [<b>License</b>](#license)
 
 <a name="api"></a>
 ## API ([1.7](../../releases))
@@ -139,6 +139,6 @@ Builds have <b>+</b>timestamp in the [version](http://semver.org/) number and ar
 
 Fund development with [tips to @ryanve](https://www.gittip.com/ryanve/) <b>=)</b>
 
-## License: [MIT](http://en.wikipedia.org/wiki/MIT_License)
+## License
 
-Copyright (C) 2013 by [Ryan Van Etten](https://github.com/ryanve)
+[MIT](package.json)

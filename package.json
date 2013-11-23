@@ -3,6 +3,7 @@
     "description": "Extensible test suite API.",
     "version": "1.7.1",
     "homepage": "https://github.com/ryanve/aok",
+    "license": "MIT",
     "author": "Ryan Van Etten",
     "keywords": ["testing", "test suite", "javascript", "ender", "browser", "server"],
     "main": "./aok.js",
