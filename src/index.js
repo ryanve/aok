@@ -11,6 +11,7 @@
       , win = typeof window != 'undefined' && window
       , nativeConsole = typeof console != 'undefined' && console
       , hasAlert = win && 'alert' in win
+      , performance = win['performance']
       , uid = 0
       , has = function(o, k) {
             return owns.call(o, k);
@@ -172,11 +173,13 @@
      * @param {Function} fn
      * @return {number} millisecond time for `fn` to run `trials` times
      */
-    aok['perform'] = function(trials, fn) {
-        var i = 0, time = +new Date;
+    function perform(trials, fn) {
+        var i = 0, precise = perform['precise'], time = precise ? performance.now() : +new Date;
         while (i++ < trials) fn.call(this);
-        return +new Date - time;
-    };
+        return (precise ? performance.now() : +new Date)-time;
+    }
+    perform['precise'] = !!performance && 'now' in performance;
+    aok['perform'] = perform;
     
     /**
      * @this {*} scope to run in
