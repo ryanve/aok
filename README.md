@@ -10,17 +10,24 @@
 - [<b>License</b>](#license)
 
 <a name="api"></a>
-## API ([1.7](../../releases))
+## API ([1.8](../../releases))
 
-- [<b>aok(</b>testObject<b>)</b>](#aoktestobject)
+- [<b>aok(</b><b>)</b>](#aok-function)
 - [<b>Console methods</b>](#console-methods)
 - [<b>Utilities</b>](#utilities)
 
-### aok(testObject)
+<a name="aok-function"></a>
+### aok() &rarr; `aok` instance
+#### Syntaxes
 
-#### <var>testObject</var> properties
+- [`aok(object)`](#verbose-syntax)
+- [`aok(test)`](#anonymous-syntax)
+- [`aok(id, test)`](#pair-syntax)
+- [`aok()`](#idle-syntax)
+
+#### Properties
 - **id**: identifier or name for the test (defaults to a positive integer)
-- **test**: result or callback (called in <var>testObject</var>'s scope)
+- **test**: result or callback (called in the instance's scope)
 - **pass**: message or callback (default: "Pass")
 - **fail**: message or callback (default: "Fail")
 - **handler**: defaults to `aok.prototype.handler`
@@ -30,24 +37,46 @@
 - **cull**: defaults to `aok.prototype.cull`
 - **init**: defaults to `aok.prototype.init`
 
-#### Syntax
+#### Verbose syntax
+##### `aok(object)`
+
 ```js
 aok({
-    id: 'example'
-  , test: function() {
-        return 'example' === this.id;
-    }
+  id: 'example',
+  test: function() {
+    return 'example' === this.id;
+  }
 });
 ```
 
-##### Shorthand
-###### Non-objects become the `.test`
+#### Anonymous syntax
+##### `aok(test)` for non-object tests
+
 ```js
-aok(typeof aok == 'function');
+aok(true);
 aok(aok instanceof aok);
 aok(function() {
-    return isFinite(this.id);
+  return isFinite(this.id);
 });
+```
+
+#### Pair syntax
+##### `aok(id, test)` [1.8+](../../issues/1)
+
+```js
+aok('example', true);
+aok('example', function() {
+  return true;
+});
+```
+
+#### Idle syntax
+##### Calling `aok()` without arguments creates an idle instance that can manually be run later.
+
+```js
+var o = aok();
+o.test = true;
+o.run();
 ```
 
 ### Console methods
@@ -95,15 +124,14 @@ aok(function() {
 
 ## grunt aok
 #### aok 1.5+ includes a simple grunt [task](./tasks) for running tests via [grunt](http://gruntjs.com/)
-
 ##### Configure files to [require](http://nodejs.org/api/globals.html#globals_require)
 
 ```js
 grunt.initConfig({
-    aok: {
-        test: ['./test/']
-      , extras: ['./test/extras'] 
-    }
+  aok: {
+    test: ['./test/'],
+    extras: ['./test/extras'] 
+  }
 });
 ```
 
@@ -124,7 +152,6 @@ $ grunt aok:extras
 - See test dirs in [<b>ryanve</b> packages](https://npmjs.org/~ryanve) for examples
 
 ## Developers
-
 #### <b>Contribute</b> edits to [`/src`](./src) or report [issues](../../issues)
 
 ```sh
@@ -137,7 +164,7 @@ Builds have <b>+</b>timestamp in the [version](http://semver.org/) number and ar
 
 ## Fund
 
-Fund development with [tips to @ryanve](https://www.gittip.com/ryanve/) <b>=)</b>
+<b>[Tip the developer](https://www.gittip.com/ryanve/)</b> =)
 
 ## License
 
