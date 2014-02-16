@@ -27,24 +27,29 @@
         };
       
     /**
-     * @constructor 
+     * @constructor
+     * (), (test), (id, test), (data), or (data, test)
      * @param {*=} data
+     * @param {*=} test
      */
-    function Aok(data) {
-        // Own 'test' unless instantiated w/o args,
-        // or unless `data` is 'object' w/o 'test'.
-        // Running proceeds only if 'test' is owned.
+    function Aok(data, test) {
+        // Own 'test' unless called w/o args or unless `data` is 'object' w/o 'test'
+        // Running proceeds only if `this` owns 'test'
+        var n = arguments.length;
+        if (2 == n) this['test'] = test;
         if (typeof data == 'object' && data) assign(this, data);
-        else if (arguments.length) this['test'] = data;
-        this['init']();
+        else if (n) this[2 == n ? 'id' : 'test'] = data;
     }
 
     /**
-     * @param {*=} data
+     * (), (test), (id, test), (data), or (data, test)
      * @return {Aok}
      */
-    function aok(data) {
-        return arguments.length ? new Aok(data) : new Aok; 
+    function aok() {
+        var o = new Aok;
+        Aok.apply(o, arguments);
+        o['init']();
+        return o;
     }
     
     // Console abstractions

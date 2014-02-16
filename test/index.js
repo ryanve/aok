@@ -3,29 +3,53 @@
       , es5 = Array.isArray ? 'reduce' in [] : 0
       , browse = typeof window != 'undefined';
 
+    function noop() {}
     function called() {
         return !arguments.length && this;
     }
+
     function isNatural(n) {
         return 0 < n && n === (n >> 0);
     }
+    
+    aok('(id, bool)', aok('(id, test)', function() {
+      return this.id === '(id, test)';
+    }).test === true);
+    
+    aok('({})', function() {
+      var o = aok({});
+      return isNatural(o.id) && !o.hasOwnProperty('test');
+    });
+    
+    aok('({id:*})', function() {
+      return aok({id:''}).id === '';
+    });
+
+    aok('({test:*})', function() {
+      return aok({test:true, handler:noop}).test === true;
+    });
+
     aok({
         id: '#can',
         test: true === aok.can(aok)() && false === aok.can(function() {
             throw new Error;
         })()
     });
+
     aok({
         id: 'safe',
         test:!aok.can(aok().run)()
     });
+
     aok({
         id: 'instance',
         test: instance instanceof aok
     });
+
     aok(function() {
         return isNatural(this.id) && (this.id = '.id');
     });
+
     aok({
         id: '.handler',
         test: false,
@@ -34,6 +58,7 @@
             return aok.prototype.handler.call(this);
         }
     });
+
     aok({
         id: '.cull',
         test: function() {
@@ -42,6 +67,7 @@
             return culled === this.pass;
         }
     });
+
     aok({
         id: '#pass',
         test: 1 === aok.pass([0], function(v, i, a) {
@@ -54,6 +80,7 @@
             return this === aok && a[i] === v;
         }, aok)
     });
+
     aok({
         id: '#fail',
         test: 1 === aok.pass([0], function(v, i, a) {
@@ -66,6 +93,7 @@
             return this === aok && a[i] === v;
         }, aok)
     });
+
     aok({
         id: '#result',
         test: !aok.fail([
@@ -75,10 +103,12 @@
           , 1 === aok.result([1], 0)
         ], aok.pass)
     });
+
     aok({
         id: '#explain',
         test: '0' === aok.explain(0) && plain.toString.call(aok) === aok.explain()
     });
+
     aok({
         id: '#perform',
         test: function() {
@@ -87,6 +117,7 @@
             return time === +time && trials === ran;
         }
     });
+
     aok({
         id: '#race',
         test: function() {
@@ -97,6 +128,7 @@
             return a === trials && b === trials && !aok.fail(times, isFinite, null, 1);
         }
     });
+
     aok({
         id: '#console',
         test:function() {
