@@ -1,7 +1,7 @@
 /*!
- * aok 1.8.0+201402160620
+ * aok 1.8.1+201403101030
  * https://github.com/ryanve/aok
- * MIT License 2014 Ryan Van Etten
+ * MIT License (c) 2014 Ryan Van Etten
  */
 
 (function(root, name, make) {
