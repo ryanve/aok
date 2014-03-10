@@ -23,6 +23,7 @@ module.exports = function(grunt) {
   } catch(e) { open = 0; }
 
   grunt.registerMultiTask('aok', function() {
+    var done = this.async();
     grunt.log.subhead('Running tests...');
 
     [].concat(this.data).some(function bulk(id) {
@@ -31,9 +32,12 @@ module.exports = function(grunt) {
       else (open && htm.test(id) ? open : require)(path.resolve(id));
     });
 
-    grunt.log.subhead((passed + failed) + ' tests ran.');
-    passed && grunt.log.ok(passed + ' tests passed.');
-    failed && grunt.log.warn(failed + ' tests failed.');
-    failed && grunt.fail.warn('Fail.');
+    setTimeout(function() {
+      grunt.log.subhead((passed + failed) + ' tests ran.');
+      passed && grunt.log.ok(passed + ' tests passed.');
+      failed && grunt.log.warn(failed + ' tests failed.');
+      failed && grunt.fail.warn('Fail.');
+      done();
+    }, 0);
   });
 };

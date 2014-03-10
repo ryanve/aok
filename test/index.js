@@ -11,6 +11,10 @@
   function isNatural(n) {
     return 0 < n && n === (n >> 0);
   }
+  
+  setTimeout(function() {
+    aok('async', true);
+  }, 0);
 
   aok('(id, bool)', aok('(id, test)', function() {
     return this.id === '(id, test)';
