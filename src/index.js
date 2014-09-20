@@ -20,11 +20,6 @@
     , assign = function(to, from) {
         for (var k in from) has(from, k) && (to[k] = from[k]);
         return to;
-      }
-    , clone = function(fn) {
-        return assign(function() {
-          fn.apply(this, arguments);
-        }, fn);
       };
     
   /**
@@ -55,34 +50,35 @@
   
   // Console abstractions
   assign(aok, aok['console'] = (function(abstracted, console, hasAlert, win) {
-    function abstracts(name, force, fallback) {
+    function abstracts(name, fallback) {
       var method = console && typeof console[name] == 'function' ? function() {
         console[name].apply(console, arguments);
-      } : fallback ? fallback : hasAlert ? function() {
-        method['force'] && win.alert(name + ': ' + [].join.call(arguments, ' '));
+      } : typeof fallback == 'function' ? fallback : fallback ? function() {
+        win.alert(name + ': ' + [].join.call(arguments, ' '));
       } : function() {};
-      method['force'] = !!force;
       abstracted[name] = method;
     }
 
     abstracts('log');
     abstracts('trace');
-    abstracts('info', 1);
-    abstracts('warn', 1);
-    abstracts('error', 1);
-    abstracts('clear', 0, function() {});
-    abstracts('assert', 1, function(exp, msg) {
-      exp || abstracted['warn'](msg);
+    abstracts('info');
+    abstracts('warn', hasAlert);
+    abstracts('error', hasAlert);
+    abstracts('clear', function() {});
+    abstracts('assert', function(exp, msg) {
+      exp || abstracted['error'](msg);
     });
     return abstracted;
   }({}, nativeConsole, hasAlert, win)));
-  
-  // Alias the "express" method to the prototype for usage with tests.
-  model['express'] = aok['express'] = clone(aok['log']);
+
+  aok['express'] = aok['log'];
+  model['express'] = function() {
+    return aok[this.test === false ? 'error' : 'info'].apply(this, arguments);
+  };
   
   // Default messages
-  model['pass'] = 'Pass';
-  model['fail'] = 'Fail';
+  model['pass'] = 'ok';
+  model['fail'] = 'FAIL';
 
   /**
    * @this {Aok|Object}
