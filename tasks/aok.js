@@ -8,12 +8,12 @@ module.exports = function(grunt) {
 
   a.pass = b.pass = function() {
     passed++ || grunt.verbose.or.writeln('Use --verbose if you want details');
-    grunt.verbose.ok('Ok @ ' + this.id);
+    grunt.verbose.ok('ok @ ' + this.id);
   };
 
   a.fail = b.fail = function() {
     failed++;
-    grunt.log.warn('Fail @ ' + this.id);
+    grunt.log.warn('FAIL @ ' + this.id);
   };
 
   try {
