@@ -10,7 +10,7 @@
 - [<b>License</b>](#license)
 
 <a name="api"></a>
-## API ([1.8](../../releases))
+## API ([1.9](../../releases))
 
 - [<b>aok(</b><b>)</b>](#aok-function)
 - [<b>Console methods</b>](#console-methods)
@@ -28,8 +28,8 @@
 #### Properties
 - **id**: identifier or name for the test (defaults to a positive integer)
 - **test**: result or callback (called in the instance's scope)
-- **pass**: message or callback (default: "Pass")
-- **fail**: message or callback (default: "Fail")
+- **pass**: message or callback (default: "ok")
+- **fail**: message or callback (default: "FAIL")
 - **handler**: defaults to `aok.prototype.handler`
 - **express**: defaults to `aok.prototype.express`
 - **explain**: defaults to `aok.prototype.explain`
